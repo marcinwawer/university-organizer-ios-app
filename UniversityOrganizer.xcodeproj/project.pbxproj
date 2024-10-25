@@ -6,20 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		84EDF7B92CCA881700CDF328 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EDF7B62CCA881700CDF328 /* ContentView.swift */; };
-		84EDF7BA2CCA881700CDF328 /* UniversityOrganizerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EDF7B72CCA881700CDF328 /* UniversityOrganizerApp.swift */; };
-		84EDF7BB2CCA881700CDF328 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84EDF7B32CCA881700CDF328 /* Preview Assets.xcassets */; };
-		84EDF7BC2CCA881700CDF328 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84EDF7B52CCA881700CDF328 /* Assets.xcassets */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		84EDF7A22CCA880B00CDF328 /* UniversityOrganizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniversityOrganizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		84EDF7B32CCA881700CDF328 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		84EDF7B52CCA881700CDF328 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		84EDF7B62CCA881700CDF328 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		84EDF7B72CCA881700CDF328 /* UniversityOrganizerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversityOrganizerApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		84C092462CCC405900A883CE /* UniversityOrganizer */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = UniversityOrganizer;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		84EDF79F2CCA880B00CDF328 /* Frameworks */ = {
@@ -35,7 +32,7 @@
 		84EDF7992CCA880B00CDF328 = {
 			isa = PBXGroup;
 			children = (
-				84EDF7B82CCA881700CDF328 /* UniversityOrganizer */,
+				84C092462CCC405900A883CE /* UniversityOrganizer */,
 				84EDF7A32CCA880B00CDF328 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,25 +43,6 @@
 				84EDF7A22CCA880B00CDF328 /* UniversityOrganizer.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		84EDF7B42CCA881700CDF328 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				84EDF7B32CCA881700CDF328 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		84EDF7B82CCA881700CDF328 /* UniversityOrganizer */ = {
-			isa = PBXGroup;
-			children = (
-				84EDF7B62CCA881700CDF328 /* ContentView.swift */,
-				84EDF7B72CCA881700CDF328 /* UniversityOrganizerApp.swift */,
-				84EDF7B52CCA881700CDF328 /* Assets.xcassets */,
-				84EDF7B42CCA881700CDF328 /* Preview Content */,
-			);
-			path = UniversityOrganizer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -81,6 +59,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				84C092462CCC405900A883CE /* UniversityOrganizer */,
 			);
 			name = UniversityOrganizer;
 			packageProductDependencies = (
@@ -128,8 +109,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84EDF7BB2CCA881700CDF328 /* Preview Assets.xcassets in Resources */,
-				84EDF7BC2CCA881700CDF328 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,8 +119,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84EDF7B92CCA881700CDF328 /* ContentView.swift in Sources */,
-				84EDF7BA2CCA881700CDF328 /* UniversityOrganizerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
