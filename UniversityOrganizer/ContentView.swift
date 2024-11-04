@@ -13,35 +13,37 @@ struct ContentView: View {
     @State private var activeTab: TabModel = .home
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            TabView(selection: $activeTab) {
-                Tab.init(value: .home) {
-                    Text("Home")
-                        .toolbarVisibility(.hidden, for: .tabBar)
+        GeometryReader { geo in
+            ZStack(alignment: .bottom) {
+                TabView(selection: $activeTab) {
+                    Tab.init(value: .home) {
+                        HomeView(safeAreaInsets: geo.safeAreaInsets)
+                            .toolbarVisibility(.hidden, for: .tabBar)
+                    }
+                    
+                    Tab.init(value: .tasks) {
+                        Text("Tasks")
+                            .toolbarVisibility(.hidden, for: .tabBar)
+                    }
+                    
+                    Tab.init(value: .notes) {
+                        Text("Notes")
+                            .toolbarVisibility(.hidden, for: .tabBar)
+                    }
+                    
+                    Tab.init(value: .marks) {
+                        Text("Marks")
+                            .toolbarVisibility(.hidden, for: .tabBar)
+                    }
+                    
+                    Tab.init(value: .plan) {
+                        Text("Plan ")
+                            .toolbarVisibility(.hidden, for: .tabBar)
+                    }
                 }
                 
-                Tab.init(value: .tasks) {
-                    Text("Tasks")
-                        .toolbarVisibility(.hidden, for: .tabBar)
-                }
-                
-                Tab.init(value: .notes) {
-                    Text("Notes")
-                        .toolbarVisibility(.hidden, for: .tabBar)
-                }
-                
-                Tab.init(value: .marks) {
-                    Text("Marks")
-                        .toolbarVisibility(.hidden, for: .tabBar)
-                }
-                
-                Tab.init(value: .plan) {
-                    Text("Plan ")
-                        .toolbarVisibility(.hidden, for: .tabBar)
-                }
+                CustomTabBar(activeTab: $activeTab)
             }
-            
-            CustomTabBar(activeTab: $activeTab)
         }
     }
 }

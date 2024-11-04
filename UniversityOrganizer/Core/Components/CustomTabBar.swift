@@ -15,7 +15,7 @@ struct CustomTabBar: View {
     @State private var tabLocation = CGRect.zero
     
     var activeForeground = Color.white
-    var activeBackground = Color.blue
+    var activeBackground = Color.theme.blue
     
     var body: some View {
         HStack(spacing: 0) {
@@ -39,20 +39,8 @@ struct CustomTabBar: View {
             .padding(.horizontal, 5)
             .frame(height: 45)
             .background(
-                .background
-                    .shadow(
-                        .drop(
-                            color: colorScheme == .dark ? .white.opacity(0.08) : .black.opacity(0.08),
-                            radius: 5, x: 5, y: 5
-                        )
-                    )
-                    .shadow(
-                        .drop(
-                            color: colorScheme == .dark ? .white.opacity(0.06) : .black.opacity(0.06),
-                            radius: 5, x: -5, y: -5
-                        )
-                    ),
-                in: .capsule
+                Capsule()
+                    .fill(.ultraThinMaterial)
             )
             .zIndex(10)
         }
