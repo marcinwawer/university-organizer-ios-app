@@ -7,23 +7,6 @@
 
 import SwiftUI
 
-struct ParralexEffect: View {
-    var body: some View {
-        GeometryReader { geo in
-            let offsetY = geo.frame(in: .global).minY
-            let isScrolled = offsetY > 0
-            let height = geo.size.height
-            
-            Spacer()
-                .frame(height: isScrolled ? height + offsetY : height)
-                .background {
-                    LinearGradient.customGradient.customBackground()
-                        .offset(y: isScrolled ? -offsetY : 0)
-                }
-        }
-    }
-}
-
 struct HomeView: View {
     var safeAreaInsets: EdgeInsets
     
@@ -32,7 +15,7 @@ struct HomeView: View {
             HomeUserView()
                 .padding()
                 .padding(.top, safeAreaInsets.top)
-                .background(ParralexEffect())
+                .background(GradientBackground())
 
             newsView(text: "X tasks to complete") // TODO: vm
                 .padding(.leading)
