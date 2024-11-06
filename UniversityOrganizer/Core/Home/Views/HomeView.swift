@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
+    @State private var showPreferencesView = false
     
     var safeAreaInsets: EdgeInsets
     
@@ -45,6 +46,11 @@ struct HomeView: View {
             
             Spacer()
         }
+        .sheet(isPresented: $showPreferencesView) {
+            NavigationStack {
+                PreferencesView()
+            }
+        }
         .scrollIndicators(.hidden)
         .safeAreaPadding(.bottom, 100)
         .ignoresSafeArea()
@@ -63,21 +69,21 @@ struct HomeView: View {
 }
 
 #Preview {
-    NavigationStack {
-        GeometryReader { geo in
-            HomeView(safeAreaInsets: geo.safeAreaInsets)
-        }
+    GeometryReader { geo in
+        HomeView(safeAreaInsets: geo.safeAreaInsets)
     }
 }
 
 extension HomeView {
     private var header: some View {
         HStack {
-            NavigationLink(destination: PreferencesView()) {
-                Image(systemName: "slider.horizontal.3")
-                    .font(.title)
-                    .foregroundStyle(colorScheme == .dark ? .white : .black)
-            }
+            Image(systemName: "slider.horizontal.3")
+                .font(.title)
+                .foregroundStyle(colorScheme == .dark ? .white : .black)
+                .onTapGesture {
+                    showPreferencesView = true
+                }
+            
             Spacer()
             
             Text("Hi, Name 🚀") //TODO: vm

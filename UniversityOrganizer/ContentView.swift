@@ -17,12 +17,11 @@ struct ContentView: View {
             ZStack(alignment: .bottom) {
                 TabView(selection: $activeTab) {
                     Tab.init(value: .home) {
-                        NavigationStack {
-                            HomeView(safeAreaInsets: geo.safeAreaInsets)
-                                .toolbarVisibility(.hidden, for: .tabBar)
+                        HomeView(safeAreaInsets: geo.safeAreaInsets)
+                            .toolbarVisibility(.hidden, for: .tabBar)
 //                                .ignoresSafeArea(.keyboard) ??? moze byc potrzebne do chowania tabbar przy pisaniu ???
-                        }
                     }
+                    
                     Tab.init(value: .tasks) {
                         Text("Tasks")
                             .toolbarVisibility(.hidden, for: .tabBar)

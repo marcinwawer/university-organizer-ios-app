@@ -28,6 +28,14 @@ struct PreferencesView: View {
         }
         .navigationTitle("Preferences")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                XMarkButton()
+                    .onTapGesture {
+                        dismiss()
+                    }
+            }
+        }
     }
 }
 
