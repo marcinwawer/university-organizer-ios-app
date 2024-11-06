@@ -9,7 +9,10 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
+    
     @State private var showPreferencesView = false
+    
+    @Binding var activeTab: TabModel
     
     var safeAreaInsets: EdgeInsets
     
@@ -31,14 +34,23 @@ struct HomeView: View {
             newsView(text: "X tasks to complete") // TODO: vm
                 .padding(.leading)
                 .foregroundStyle(Color.theme.green)
+                .onTapGesture {
+                    activeTab = .tasks
+                }
             
             newsView(text: "X deadlines this week") // TODO: vm
                 .padding(.leading)
                 .foregroundStyle(Color.theme.red)
+                .onTapGesture {
+                    activeTab = .tasks
+                }
             
             newsView(text: "X new marks last week") // TODO: vm
                 .padding(.leading)
                 .foregroundStyle(Color.theme.blue)
+                .onTapGesture {
+                    activeTab = .marks
+                }
             
             upcomingClassSection
             
@@ -70,7 +82,7 @@ struct HomeView: View {
 
 #Preview {
     GeometryReader { geo in
-        HomeView(safeAreaInsets: geo.safeAreaInsets)
+        HomeView(activeTab: .constant(TabModel.home), safeAreaInsets: geo.safeAreaInsets)
     }
 }
 
@@ -156,6 +168,9 @@ extension HomeView {
                 .padding()
             }
             .padding(.horizontal, 40)
+            .onTapGesture {
+                activeTab = .marks
+            }
         }
     }
     
@@ -196,6 +211,9 @@ extension HomeView {
                 .lineLimit(1)
             }
             .padding(.horizontal, 40)
+            .onTapGesture {
+                activeTab = .plan
+            }
         }
     }
     
