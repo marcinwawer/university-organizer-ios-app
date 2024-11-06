@@ -10,7 +10,7 @@ import SwiftUI
 struct XMarkButton: View {
     var body: some View {
         Image(systemName: "xmark")
-            .font(.system(size: 16, weight: .bold))
+            .font(.system(size: 14, weight: .bold))
             .foregroundColor(.white)
             .padding(5)
             .background(.black.opacity(0.6))

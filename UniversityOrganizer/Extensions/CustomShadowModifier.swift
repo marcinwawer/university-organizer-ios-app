@@ -13,7 +13,7 @@ struct CustomShadowModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .shadow(
-                color: colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1),
+                color: colorScheme == .dark ? .white.opacity(0.15) : .black.opacity(0.15),
                 radius: 8
             )
     }

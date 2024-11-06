@@ -8,31 +8,41 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     var safeAreaInsets: EdgeInsets
     
     var body: some View {
         ScrollView {
-            HomeUserView()
-                .padding()
-                .padding(.top, safeAreaInsets.top)
-                .background(GradientBackground())
-
+            VStack() {
+                header
+                    .padding(.bottom, 4)
+                
+                universityInfo
+                
+                userInfo
+                    .padding(.top)
+            }
+            .padding()
+            .padding(.top, safeAreaInsets.top)
+            .background(GradientBackground())
+            
             newsView(text: "X tasks to complete") // TODO: vm
                 .padding(.leading)
                 .foregroundStyle(Color.theme.green)
-
+            
             newsView(text: "X deadlines this week") // TODO: vm
                 .padding(.leading)
                 .foregroundStyle(Color.theme.red)
-
+            
             newsView(text: "X new marks last week") // TODO: vm
                 .padding(.leading)
                 .foregroundStyle(Color.theme.blue)
-        
+            
             upcomingClassSection
-        
+            
             gpaSection
-
+            
             Spacer()
         }
         .scrollIndicators(.hidden)
@@ -53,12 +63,59 @@ struct HomeView: View {
 }
 
 #Preview {
-    GeometryReader { geo in
-        HomeView(safeAreaInsets: geo.safeAreaInsets)
+    NavigationStack {
+        GeometryReader { geo in
+            HomeView(safeAreaInsets: geo.safeAreaInsets)
+        }
     }
 }
 
 extension HomeView {
+    private var header: some View {
+        HStack {
+            NavigationLink(destination: PreferencesView()) {
+                Image(systemName: "slider.horizontal.3")
+                    .font(.title)
+                    .foregroundStyle(colorScheme == .dark ? .white : .black)
+            }
+            Spacer()
+            
+            Text("Hi, Name 🚀") //TODO: vm
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+            Spacer()
+        }
+    }
+    
+    private var universityInfo: some View {
+        Group {
+            Text("University Name") //TODO: vm
+            Text("Major Name") //TODO: vm
+        }
+        .font(.callout)
+        .foregroundStyle(.secondary)
+        .lineLimit(1)
+    }
+    
+    private var userInfo: some View {
+        HStack() {
+            Circle()
+                .frame(width: 100, height: 100)
+                .padding(.trailing)
+            
+            VStack(alignment: .leading) {
+                Text("Name and Surname") // TODO: vm
+                Text("Student, year") //TODO: vm
+                Text("Index") //TODO: vm
+            }
+            .foregroundStyle(.secondary)
+            .font(.callout)
+            
+            
+            Spacer()
+        }
+    }
+    
     private var gpaSection : some View {
         VStack {
             HStack {
