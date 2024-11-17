@@ -12,6 +12,7 @@ struct PreferencesView: View {
     
     @State private var showColors = false
     @State private var showProfilePictures = false
+    @State private var academicYear = AcademicYear.first
     
     var body: some View {
         ZStack {
@@ -46,29 +47,27 @@ struct PreferencesView: View {
 }
 
 extension PreferencesView {
-    private var darkModeOption : some View {
+    private var darkModeOption: some View {
         Toggle("🌙 Dark Mode", isOn: .constant(false))
             .padding()
+            .padding(.vertical, 2)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .padding(.horizontal)
     }
     
-    private var academicYearOption : some View {
+    private var academicYearOption: some View {
         HStack(spacing: 0) {
             Text("🎓 Academic Year")
             
             Spacer()
             
-            Text("Third") //TODO: vm
-            
-            Picker("Sort by", selection: .constant("")) {
-                Text("First").tag(1)
-                Text("Second").tag(2)
-                Text("Third").tag(3)
-                Text("Fourth").tag(4)
-                Text("Fifth").tag(5)
-            } // TODO: VM
+            Picker("Academic year", selection: $academicYear) {
+                ForEach(AcademicYear.allCases) { academicYear in
+                    Text(academicYear.rawValue.capitalized).tag(academicYear)
+                }
+            }
+            .pickerStyle(MenuPickerStyle())
         }
         .padding()
         .background(.ultraThinMaterial)
@@ -76,14 +75,14 @@ extension PreferencesView {
         .padding(.horizontal)
     }
     
-    private var colorsOption : some View {
+    private var colorsOption: some View {
         HStack {
             Text("🌈 Set Colors for Classes")
             Spacer()
             Image(systemName: "chevron.right")
         }
         .padding()
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
@@ -95,19 +94,19 @@ extension PreferencesView {
         } //TODO: VM
     }
     
-    private var profilePictrueOption : some View {
+    private var profilePictrueOption: some View {
         HStack {
             Text("🧏‍♂️ Choose profile picture")
             Spacer()
             Image(systemName: "chevron.right")
         }
         .padding()
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
         .onTapGesture {
-            showColors = true
+            showProfilePictures = true
         }
         .navigationDestination(isPresented: $showProfilePictures) {
             EmptyView()
