@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    @AppStorage("showWelcomeView") private var showWelcomeView = true
+    @Binding var checkWelcomeView: Bool
+    
     @State private var name = ""
     @State private var surname = ""
     @State private var index = ""
@@ -55,7 +58,7 @@ struct WelcomeView: View {
 
 #Preview {
     NavigationStack {
-        WelcomeView()
+        WelcomeView(checkWelcomeView: .constant(true))
     }
 }
 
@@ -150,7 +153,7 @@ extension WelcomeView {
                 .frame(maxWidth: .infinity)
                 .background(Color.theme.green)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .shadow(color: Color.theme.green.opacity(0.7), radius: 10)
+                .shadow(color: Color.theme.green.opacity(0.5), radius: 10)
         }
         .padding(.horizontal)
     }
@@ -158,6 +161,8 @@ extension WelcomeView {
     private var saveButton: some View {
         Button {
             //TODO: vm
+            showWelcomeView = false
+            checkWelcomeView = false
         } label: {
             Text("Save")
                 .foregroundStyle(.white)
@@ -166,7 +171,7 @@ extension WelcomeView {
                 .frame(maxWidth: .infinity)
                 .background(Color.theme.blue)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .shadow(color: Color.theme.blue.opacity(0.7), radius: 10)
+                .shadow(color: Color.theme.blue.opacity(0.5), radius: 10)
         }
         .padding(.horizontal)
     }
