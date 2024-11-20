@@ -53,6 +53,9 @@ struct WelcomeView: View {
                 saveButton
             }
         }
+        .onTapGesture {
+            UIApplication.shared.endEditing()
+        }
     }
 }
 
@@ -68,6 +71,16 @@ extension WelcomeView {
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .autocorrectionDisabled()
+            .overlay(alignment: .trailing) {
+                Image(systemName: "xmark.circle.fill")
+                    .padding()
+                    .opacity(name.isEmpty ? 0 : 1)
+                    .onTapGesture {
+                        UIApplication.shared.endEditing()
+                        name = ""
+                    }
+            }
             .padding(.horizontal)
     }
     
@@ -76,6 +89,16 @@ extension WelcomeView {
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .autocorrectionDisabled()
+            .overlay(alignment: .trailing) {
+                Image(systemName: "xmark.circle.fill")
+                    .padding()
+                    .opacity(surname.isEmpty ? 0 : 1)
+                    .onTapGesture {
+                        UIApplication.shared.endEditing()
+                        surname = ""
+                    }
+            }
             .padding(.horizontal)
     }
     
@@ -84,6 +107,16 @@ extension WelcomeView {
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .autocorrectionDisabled()
+            .overlay(alignment: .trailing) {
+                Image(systemName: "xmark.circle.fill")
+                    .padding()
+                    .opacity(index.isEmpty ? 0 : 1)
+                    .onTapGesture {
+                        UIApplication.shared.endEditing()
+                        index = ""
+                    }
+            }
             .padding(.horizontal)
             .keyboardType(.numberPad)
     }
@@ -93,6 +126,16 @@ extension WelcomeView {
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .autocorrectionDisabled()
+            .overlay(alignment: .trailing) {
+                Image(systemName: "xmark.circle.fill")
+                    .padding()
+                    .opacity(university.isEmpty ? 0 : 1)
+                    .onTapGesture {
+                        UIApplication.shared.endEditing()
+                        university = ""
+                    }
+            }
             .padding(.horizontal)
     }
     
@@ -101,6 +144,16 @@ extension WelcomeView {
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            .autocorrectionDisabled()
+            .overlay(alignment: .trailing) {
+                Image(systemName: "xmark.circle.fill")
+                    .padding()
+                    .opacity(degree.isEmpty ? 0 : 1)
+                    .onTapGesture {
+                        UIApplication.shared.endEditing()
+                        degree = ""
+                    }
+            }
             .padding(.horizontal)
     }
     
