@@ -11,6 +11,8 @@ struct WelcomeView: View {
     @AppStorage("showWelcomeView") private var showWelcomeView = true
     @Binding var checkWelcomeView: Bool
     
+    @Environment(UserViewModel.self) private var vm
+    
     @State private var name = ""
     @State private var surname = ""
     @State private var index = ""
@@ -53,6 +55,14 @@ struct WelcomeView: View {
                 saveButton
             }
         }
+        .onAppear {
+            name = vm.name
+            surname = vm.surname
+            index = vm.index
+            university = vm.university
+            degree = vm.degree
+            academicYear = vm.academicYear
+        }
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
@@ -62,12 +72,13 @@ struct WelcomeView: View {
 #Preview {
     NavigationStack {
         WelcomeView(checkWelcomeView: .constant(true))
+            .environment(DeveloperPreview.shared.userVM)
     }
 }
 
 extension WelcomeView {
     private var nameTextField: some View {
-        TextField("Enter your name...", text: $name)
+        TextField(name.isEmpty ? "Enter your name..." : name, text: $name)
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -85,7 +96,7 @@ extension WelcomeView {
     }
     
     private var surnameTextField: some View {
-        TextField("Enter your surname...", text: $surname)
+        TextField(surname.isEmpty ? "Enter your surname..." : surname, text: $surname)
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -103,7 +114,7 @@ extension WelcomeView {
     }
     
     private var indexTextField: some View {
-        TextField("Enter your university index...", text: $index)
+        TextField(index.isEmpty ? "Enter your university index..." : index, text: $index)
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -122,7 +133,7 @@ extension WelcomeView {
     }
     
     private var universityTextField: some View {
-        TextField("Enter your university name...", text: $university)
+        TextField(university.isEmpty ? "Enter your university name..." : university, text: $university)
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -140,7 +151,7 @@ extension WelcomeView {
     }
     
     private var degreeTextField: some View {
-        TextField("Enter your degree name...", text: $degree)
+        TextField(degree.isEmpty ? "Enter your degree name..." : degree, text: $degree)
             .padding()
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -213,7 +224,15 @@ extension WelcomeView {
     
     private var saveButton: some View {
         Button {
-            //TODO: vm
+            vm.updateUser(
+                name: name,
+                surname: surname,
+                index: index,
+                university: university,
+                degree: degree,
+                academicYear: academicYear
+            )
+            
             showWelcomeView = false
             checkWelcomeView = false
         } label: {

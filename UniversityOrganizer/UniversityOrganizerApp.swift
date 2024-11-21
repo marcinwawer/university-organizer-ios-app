@@ -10,9 +10,12 @@ import SwiftData
 
 @main
 struct UniversityOrganizerApp: App {
+    @State private var vm = UserViewModel()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(vm)
                 .modelContainer(for: Subject.self)
         }
     }

@@ -10,6 +10,8 @@ import SwiftUI
 struct PreferencesView: View {
     @Environment(\.dismiss) private var dismiss
     
+    @Environment(UserViewModel.self) private var vm
+    
     @AppStorage("showWelcomeView") private var showWelcomeView = true
     @Binding var checkWelcomeView: Bool
     
@@ -47,6 +49,7 @@ struct PreferencesView: View {
 #Preview {
     NavigationStack {
         PreferencesView(checkWelcomeView: .constant(true))
+            .environment(DeveloperPreview.shared.userVM)
     }
 }
 
@@ -119,7 +122,7 @@ extension PreferencesView {
     
     private var resetButton: some View {
         Button {
-            //TODO: VM
+            vm.resetUserData()
             showWelcomeView = true
             checkWelcomeView = true
             dismiss()
