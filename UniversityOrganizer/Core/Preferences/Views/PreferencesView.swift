@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct PreferencesView: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
+    
+    @AppStorage("showWelcomeView") private var showWelcomeView = true
+    @Binding var checkWelcomeView: Bool
     
     @State private var showColors = false
     @State private var showProfilePictures = false
@@ -25,6 +28,7 @@ struct PreferencesView: View {
                 colorsOption
                 profilePictrueOption
                 Spacer()
+                resetButton
             }
         }
         .navigationTitle("Preferences")
@@ -42,7 +46,7 @@ struct PreferencesView: View {
 
 #Preview {
     NavigationStack {
-        PreferencesView()
+        PreferencesView(checkWelcomeView: .constant(true))
     }
 }
 
@@ -96,7 +100,7 @@ extension PreferencesView {
     
     private var profilePictrueOption: some View {
         HStack {
-            Text("🧏‍♂️ Choose profile picture")
+            Text("🧏‍♂️ Choose Profile Picture")
             Spacer()
             Image(systemName: "chevron.right")
         }
@@ -111,5 +115,24 @@ extension PreferencesView {
         .navigationDestination(isPresented: $showProfilePictures) {
             EmptyView()
         }
+    }
+    
+    private var resetButton: some View {
+        Button {
+            //TODO: VM
+            showWelcomeView = true
+            checkWelcomeView = true
+            dismiss()
+        } label: {
+            Text("Reset App Data")
+                .foregroundStyle(.white)
+                .font(.headline)
+                .frame(height: 55)
+                .frame(maxWidth: .infinity)
+                .background(Color.theme.red)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .shadow(color: Color.theme.blue.opacity(0.5), radius: 10)
+        }
+        .padding(.horizontal)
     }
 }

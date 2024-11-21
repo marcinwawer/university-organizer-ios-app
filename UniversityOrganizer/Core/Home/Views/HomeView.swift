@@ -10,9 +10,10 @@ import SwiftUI
 struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @State private var showPreferencesView = false
-    
     @Binding var activeTab: TabModel
+    @Binding var checkWelcomeView: Bool
+    
+    @State private var showPreferencesView = false
     
     var safeAreaInsets: EdgeInsets
     
@@ -60,7 +61,7 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showPreferencesView) {
             NavigationStack {
-                PreferencesView()
+                PreferencesView(checkWelcomeView: $checkWelcomeView)
             }
         }
         .scrollIndicators(.hidden)
@@ -82,7 +83,7 @@ struct HomeView: View {
 
 #Preview {
     GeometryReader { geo in
-        HomeView(activeTab: .constant(TabModel.home), safeAreaInsets: geo.safeAreaInsets)
+        HomeView(activeTab: .constant(TabModel.home), checkWelcomeView: .constant(true), safeAreaInsets: geo.safeAreaInsets)
     }
 }
 
