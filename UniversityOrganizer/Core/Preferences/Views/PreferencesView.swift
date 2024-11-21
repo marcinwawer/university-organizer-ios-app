@@ -33,6 +33,12 @@ struct PreferencesView: View {
                 resetButton
             }
         }
+        .onAppear {
+            academicYear = vm.academicYear
+        }
+        .onDisappear {
+            vm.academicYear = academicYear
+        }
         .navigationTitle("Preferences")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
