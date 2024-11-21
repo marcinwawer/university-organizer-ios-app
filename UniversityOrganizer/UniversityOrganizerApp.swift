@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct UniversityOrganizerApp: App {
+    @AppStorage("appearance") private var appearance: Appearance = .light
     @State private var vm = UserViewModel()
     
     var body: some Scene {
@@ -17,6 +18,7 @@ struct UniversityOrganizerApp: App {
             ContentView()
                 .environment(vm)
                 .modelContainer(for: Subject.self)
+                .preferredColorScheme(appearance.colorScheme)
         }
     }
 }

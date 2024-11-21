@@ -13,6 +13,8 @@ struct PreferencesView: View {
     @Environment(UserViewModel.self) private var vm
     
     @AppStorage("showWelcomeView") private var showWelcomeView = true
+    @AppStorage("appearance") private var appearance: Appearance = .light
+    
     @Binding var checkWelcomeView: Bool
     
     @State private var showColors = false
@@ -61,7 +63,10 @@ struct PreferencesView: View {
 
 extension PreferencesView {
     private var darkModeOption: some View {
-        Toggle("🌙 Dark Mode", isOn: .constant(false))
+        Toggle("🌙 Dark Mode", isOn: Binding(
+            get: { appearance == .dark },
+            set: { appearance = $0 ? .dark : .light }
+            ))
             .padding()
             .padding(.vertical, 2)
             .background(.ultraThinMaterial)
