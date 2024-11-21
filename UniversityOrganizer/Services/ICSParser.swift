@@ -8,54 +8,55 @@
 import SwiftUI
 import SwiftData
 
-func parseICSContent(_ content: String, context: ModelContext) {
-    let events = content.components(separatedBy: "BEGIN:VEVENT")
-    
-    for event in events {
-        if let summary = extractField(from: event, fieldName: "SUMMARY"),
-           let dtstart = extractField(from: event, fieldName: "DTSTART;VALUE=DATE-TIME"),
-           let dtend = extractField(from: event, fieldName: "DTEND;VALUE=DATE-TIME"),
-           let description = extractField(from: event, fieldName: "DESCRIPTION"),
-           let startTime = extractTime(from: dtstart),
-           let endTime = extractTime(from: dtend),
-           let dayOfTheWeek = extractDayOfWeek(from: dtstart) {
-            
-            let firstChar = summary.first
-            guard let subjectType = SubjectType.from(character: firstChar ?? " ") else {
-                continue
-            }
-            let cleanedSummary = summary.dropFirst(3).trimmingCharacters(in: .whitespacesAndNewlines)
-            let room = extractRoom(from: description)
-            let building = extractBuilding(from: description)
-            
-            var subject: Subject? = try? context.fetch(
-                FetchDescriptor(
-                    predicate: #Predicate { subject in
-                        subject.name == cleanedSummary &&
-                        subject.type == subjectType.rawValue
+func parseICSFile(_ fileURL: URL, context: ModelContext) {
+    do {
+        let content = try String(contentsOf: fileURL, encoding: .utf8)
+        let events = content.components(separatedBy: "BEGIN:VEVENT")
+        
+        for event in events {
+            if let summary = extractField(from: event, fieldName: "SUMMARY"),
+               let dtstart = extractField(from: event, fieldName: "DTSTART;VALUE=DATE-TIME"),
+               let dtend = extractField(from: event, fieldName: "DTEND;VALUE=DATE-TIME"),
+               let description = extractField(from: event, fieldName: "DESCRIPTION"),
+               let startTime = extractTime(from: dtstart),
+               let endTime = extractTime(from: dtend),
+               let dayOfTheWeek = extractDayOfWeek(from: dtstart) {
+                
+                let firstChar = summary.first
+                guard let subjectType = SubjectType.from(character: firstChar ?? " ") else {
+                    continue
+                }
+                let cleanedSummary = summary.dropFirst(3).trimmingCharacters(in: .whitespacesAndNewlines)
+                let room = extractRoom(from: description)
+                let building = extractBuilding(from: description)
+                
+                var subject: Subject? = try? context.fetch(
+                    FetchDescriptor(
+                        predicate: #Predicate { subject in
+                            subject.name == cleanedSummary &&
+                            subject.type == subjectType.rawValue
+                        }
+                    )
+                ).first
+                
+                if subject == nil {
+                    subject = Subject(name: cleanedSummary, type: subjectType, room: room, building: building)
+                    context.insert(subject!)
+                }
+                
+                if let subject = subject {
+                    if !subject.schedules.contains(where: { $0.startTime == startTime && $0.endTime == endTime }) {
+                        let schedule = Schedule(startTime: startTime, endTime: endTime, dayOfTheWeek: dayOfTheWeek)
+                        subject.schedules.append(schedule)
                     }
-                )
-            ).first
-            
-            if subject == nil {
-                subject = Subject(name: cleanedSummary, type: subjectType, room: room, building: building)
-                context.insert(subject!)
-            }
-            
-            if let subject = subject {
-                if !subject.schedules.contains(where: { $0.startTime == startTime && $0.endTime == endTime }) {
-                    let schedule = Schedule(startTime: startTime, endTime: endTime, dayOfTheWeek: dayOfTheWeek)
-                    subject.schedules.append(schedule)
                 }
             }
         }
-    }
-    
-    do {
+        
         try context.save()
         print("Dane zostały zapisane w SwiftData.")
     } catch {
-        print("Błąd zapisu danych: \(error)")
+        print("Błąd podczas przetwarzania pliku ICS: \(error)")
     }
 }
 
