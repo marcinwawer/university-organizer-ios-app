@@ -10,6 +10,8 @@ import SwiftUI
 struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
     
+    @Environment(UserViewModel.self) private var vm
+    
     @Binding var activeTab: TabModel
     @Binding var checkWelcomeView: Bool
     
@@ -84,6 +86,7 @@ struct HomeView: View {
 #Preview {
     GeometryReader { geo in
         HomeView(activeTab: .constant(TabModel.home), checkWelcomeView: .constant(true), safeAreaInsets: geo.safeAreaInsets)
+            .environment(DeveloperPreview.shared.userVM)
     }
 }
 
@@ -99,7 +102,7 @@ extension HomeView {
             
             Spacer()
             
-            Text("Hi, Name 🚀") //TODO: vm
+            Text("Hi, \(vm.name) 🚀")
                 .font(.largeTitle)
                 .fontWeight(.semibold)
             Spacer()
@@ -108,8 +111,8 @@ extension HomeView {
     
     private var universityInfo: some View {
         Group {
-            Text("University Name") //TODO: vm
-            Text("Major Name") //TODO: vm
+            Text(vm.university)
+            Text(vm.degree)
         }
         .font(.callout)
         .foregroundStyle(.secondary)
@@ -123,9 +126,9 @@ extension HomeView {
                 .padding(.trailing)
             
             VStack(alignment: .leading) {
-                Text("Name and Surname") // TODO: vm
-                Text("Student, year") //TODO: vm
-                Text("Index") //TODO: vm
+                Text("\(vm.name) \(vm.surname)")
+                Text("Student, \(vm.academicYear) year")
+                Text(vm.index)
             }
             .foregroundStyle(.secondary)
             .font(.callout)
