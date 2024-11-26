@@ -54,9 +54,9 @@ func parseICSFile(_ fileURL: URL, context: ModelContext) {
         }
         
         try context.save()
-        print("Dane zostały zapisane w SwiftData.")
+        print("data saved correctly to swiftdata")
     } catch {
-        print("Błąd podczas przetwarzania pliku ICS: \(error)")
+        print("error during parsing ics file: \(error)")
     }
 }
 

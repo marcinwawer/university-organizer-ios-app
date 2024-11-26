@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @Observable class UserViewModel {
     private let user = User.shared
@@ -56,5 +57,14 @@ import SwiftUI
         university = ""
         degree = ""
         academicYear = .first
+    }
+    
+    func handleSecurityScopedFile(fileURL: URL, context: ModelContext) {
+        if fileURL.startAccessingSecurityScopedResource() {
+            defer { fileURL.stopAccessingSecurityScopedResource() }
+            parseICSFile(fileURL, context: context)
+        } else {
+            print("Nie można uzyskać dostępu do pliku.")
+        }
     }
 }
