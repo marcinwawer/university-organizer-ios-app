@@ -6,6 +6,7 @@
 //
 
 import SwiftData
+import Foundation
 
 enum SubjectType: String, Codable, CaseIterable {
     case lecture = "W"
@@ -20,7 +21,8 @@ enum SubjectType: String, Codable, CaseIterable {
 }
 
 @Model
-class Subject {
+class Subject: Identifiable {
+    var id = UUID()
     var name: String
     var type: String
     var schedules: [Schedule] = []

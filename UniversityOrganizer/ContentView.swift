@@ -42,7 +42,7 @@ struct ContentView: View {
                         }
                         
                         Tab.init(value: .plan) {
-                            Text("Plan ")
+                            PlanView()
                                 .toolbarVisibility(.hidden, for: .tabBar)
                         }
                     }
@@ -67,9 +67,3 @@ struct ContentView: View {
         }
     }
 }
-
-#Preview {
-    ContentView()
-}
-
-

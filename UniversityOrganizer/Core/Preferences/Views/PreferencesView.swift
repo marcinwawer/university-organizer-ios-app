@@ -134,7 +134,7 @@ extension PreferencesView {
     private var resetButton: some View {
         Button {
             vm.resetUserData()
-            vm.deleteAllSubjects(context: context)
+            vm.clearSwiftData(context: context)
             showWelcomeView = true
             checkWelcomeView = true
             dismiss()
