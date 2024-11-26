@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct PreferencesView: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
+    
+    @Environment(UserViewModel.self) private var vm
+    
+    @AppStorage("showWelcomeView") private var showWelcomeView = true
+    @AppStorage("appearance") private var appearance: Appearance = .light
+    
+    @Binding var checkWelcomeView: Bool
     
     @State private var showColors = false
     @State private var showProfilePictures = false
@@ -25,7 +32,14 @@ struct PreferencesView: View {
                 colorsOption
                 profilePictrueOption
                 Spacer()
+                resetButton
             }
+        }
+        .onAppear {
+            academicYear = vm.academicYear
+        }
+        .onDisappear {
+            vm.academicYear = academicYear
         }
         .navigationTitle("Preferences")
         .navigationBarTitleDisplayMode(.inline)
@@ -42,13 +56,17 @@ struct PreferencesView: View {
 
 #Preview {
     NavigationStack {
-        PreferencesView()
+        PreferencesView(checkWelcomeView: .constant(true))
+            .environment(DeveloperPreview.shared.userVM)
     }
 }
 
 extension PreferencesView {
     private var darkModeOption: some View {
-        Toggle("🌙 Dark Mode", isOn: .constant(false))
+        Toggle("🌙 Dark Mode", isOn: Binding(
+            get: { appearance == .dark },
+            set: { appearance = $0 ? .dark : .light }
+            ))
             .padding()
             .padding(.vertical, 2)
             .background(.ultraThinMaterial)
@@ -96,7 +114,7 @@ extension PreferencesView {
     
     private var profilePictrueOption: some View {
         HStack {
-            Text("🧏‍♂️ Choose profile picture")
+            Text("🧏‍♂️ Choose Profile Picture")
             Spacer()
             Image(systemName: "chevron.right")
         }
@@ -111,5 +129,24 @@ extension PreferencesView {
         .navigationDestination(isPresented: $showProfilePictures) {
             EmptyView()
         }
+    }
+    
+    private var resetButton: some View {
+        Button {
+            vm.resetUserData()
+            showWelcomeView = true
+            checkWelcomeView = true
+            dismiss()
+        } label: {
+            Text("Reset App Data")
+                .foregroundStyle(.white)
+                .font(.headline)
+                .frame(height: 55)
+                .frame(maxWidth: .infinity)
+                .background(Color.theme.red)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .shadow(color: Color.theme.blue.opacity(0.5), radius: 10)
+        }
+        .padding(.horizontal)
     }
 }

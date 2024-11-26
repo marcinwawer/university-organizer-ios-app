@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct WelcomeView: View {
     @AppStorage("showWelcomeView") private var showWelcomeView = true
     @Binding var checkWelcomeView: Bool
+    
+    @Environment(UserViewModel.self) private var vm
+    @Environment(\.modelContext) private var context
     
     @State private var name = ""
     @State private var surname = ""
@@ -19,6 +23,7 @@ struct WelcomeView: View {
     @State private var academicYear = AcademicYear.first
     
     @State private var showProfilePictures = false
+    @State private var importing = false
     
     var body: some View {
         ZStack {
@@ -56,19 +61,46 @@ struct WelcomeView: View {
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
+        .onAppear {
+            name = vm.name
+            surname = vm.surname
+            index = vm.index
+            university = vm.university
+            degree = vm.degree
+            academicYear = vm.academicYear
+        }
+        .fileImporter(
+            isPresented: $importing,
+            allowedContentTypes: {
+                if let calendarType = UTType(filenameExtension: "ics") {
+                    return [calendarType]
+                } else {
+                    return []
+                }
+            }()
+        ) { result in
+            switch result {
+            case .success(let fileURL):
+                vm.handleSecurityScopedFile(fileURL: fileURL, context: context)
+            case .failure(let error):
+                print("error choosing file: \(error.localizedDescription)")
+            }
+        }
     }
 }
 
 #Preview {
     NavigationStack {
         WelcomeView(checkWelcomeView: .constant(true))
+            .environment(DeveloperPreview.shared.userVM)
     }
 }
 
 extension WelcomeView {
     private var nameTextField: some View {
-        TextField("Enter your name...", text: $name)
+        TextField(name.isEmpty ? "Enter your name..." : name, text: $name)
             .padding()
+            .padding(.trailing, 20)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .autocorrectionDisabled()
@@ -85,8 +117,9 @@ extension WelcomeView {
     }
     
     private var surnameTextField: some View {
-        TextField("Enter your surname...", text: $surname)
+        TextField(surname.isEmpty ? "Enter your surname..." : surname, text: $surname)
             .padding()
+            .padding(.trailing, 20)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .autocorrectionDisabled()
@@ -103,8 +136,9 @@ extension WelcomeView {
     }
     
     private var indexTextField: some View {
-        TextField("Enter your university index...", text: $index)
+        TextField(index.isEmpty ? "Enter your university index..." : index, text: $index)
             .padding()
+            .padding(.trailing, 20)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .autocorrectionDisabled()
@@ -122,8 +156,9 @@ extension WelcomeView {
     }
     
     private var universityTextField: some View {
-        TextField("Enter your university name...", text: $university)
+        TextField(university.isEmpty ? "Enter your university name..." : university, text: $university)
             .padding()
+            .padding(.trailing, 20)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .autocorrectionDisabled()
@@ -140,8 +175,9 @@ extension WelcomeView {
     }
     
     private var degreeTextField: some View {
-        TextField("Enter your degree name...", text: $degree)
+        TextField(degree.isEmpty ? "Enter your degree name..." : degree, text: $degree)
             .padding()
+            .padding(.trailing, 20)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .autocorrectionDisabled()
@@ -197,7 +233,7 @@ extension WelcomeView {
     
     private var uploadPlanButton: some View {
         Button {
-            //TODO: parser
+            importing = true
         } label: {
             Text("Upload your plan as iCal file")
                 .foregroundStyle(.white)
@@ -213,7 +249,15 @@ extension WelcomeView {
     
     private var saveButton: some View {
         Button {
-            //TODO: vm
+            vm.updateUser(
+                name: name,
+                surname: surname,
+                index: index,
+                university: university,
+                degree: degree,
+                academicYear: academicYear
+            )
+            
             showWelcomeView = false
             checkWelcomeView = false
         } label: {
