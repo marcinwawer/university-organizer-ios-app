@@ -67,4 +67,12 @@ import SwiftData
             print("Nie można uzyskać dostępu do pliku.")
         }
     }
+    
+    func deleteAllSubjects(context: ModelContext) {
+        do {
+            try context.delete(model: Subject.self)
+        } catch {
+            print("failed to clear all subject data from swiftdata")
+        }
+    }
 }

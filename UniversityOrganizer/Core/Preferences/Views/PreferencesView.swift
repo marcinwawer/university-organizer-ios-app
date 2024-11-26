@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PreferencesView: View {
     @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.modelContext) private var context
     @Environment(UserViewModel.self) private var vm
     
     @AppStorage("showWelcomeView") private var showWelcomeView = true
@@ -134,6 +134,7 @@ extension PreferencesView {
     private var resetButton: some View {
         Button {
             vm.resetUserData()
+            vm.deleteAllSubjects(context: context)
             showWelcomeView = true
             checkWelcomeView = true
             dismiss()
