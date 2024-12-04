@@ -16,20 +16,24 @@ struct ColorPickerView: View {
     
     var body: some View {
         VStack {
-            List(vm.uniqueSubjects(from: subjects)) { subject in
-                ColorPicker(subject.name, selection: Binding(
-                    get: {
-                        vm.selectedColors[subject.id] ?? Color.theme.background
-                    },
-                    set: { newColor in
-                        vm.updateSubjectColor(subject, to: newColor, subjects: subjects, context: context)
-                    }
-                ))
+            if (subjects.isEmpty) {
+                NoClassesView()
+            } else {
+                List(vm.uniqueSubjects(from: subjects)) { subject in
+                    ColorPicker(subject.name, selection: Binding(
+                        get: {
+                            vm.selectedColors[subject.id] ?? Color.theme.background
+                        },
+                        set: { newColor in
+                            vm.updateSubjectColor(subject, to: newColor, subjects: subjects, context: context)
+                        }
+                    ))
+                }
+                
+                Spacer()
+                
+                resetButton
             }
-            
-            Spacer()
-            
-            resetButton
         }
         .navigationTitle("Select Colors for Classes")
         .onAppear {
