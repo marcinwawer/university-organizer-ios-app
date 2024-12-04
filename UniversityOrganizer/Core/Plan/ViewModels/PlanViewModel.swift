@@ -48,7 +48,8 @@ import SwiftData
     }
     
     func getTodayDayAsInt() -> Int {
-        return Calendar.current.component(.weekday, from: Date()) - 1
+        let weekday = Calendar.current.component(.weekday, from: Date())
+        return (weekday == 1) ? 6 : weekday - 2
     }
     
     func getSubjectClosestToNow(context: ModelContext) -> Subject? {
