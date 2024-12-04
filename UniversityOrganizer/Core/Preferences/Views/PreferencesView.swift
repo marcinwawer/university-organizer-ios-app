@@ -38,8 +38,8 @@ struct PreferencesView: View {
         .onAppear {
             academicYear = vm.academicYear
         }
-        .onDisappear {
-            vm.academicYear = academicYear
+        .onChange(of: academicYear) { _, newValue in
+            vm.academicYear = newValue
         }
         .navigationTitle("Preferences")
         .navigationBarTitleDisplayMode(.inline)

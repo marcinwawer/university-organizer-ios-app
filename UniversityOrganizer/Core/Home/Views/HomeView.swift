@@ -19,6 +19,7 @@ struct HomeView: View {
     
     @State private var showPreferencesView = false
     @State private var upcomingSubject: Subject?
+    @State private var academicYear = AcademicYear.first
     
     var safeAreaInsets: EdgeInsets
     
@@ -66,8 +67,12 @@ struct HomeView: View {
         }
         .onAppear {
             loadUpcomingClass()
+            academicYear = userVM.academicYear
         }
-        .sheet(isPresented: $showPreferencesView) {
+        .sheet(isPresented: $showPreferencesView, onDismiss: {
+            academicYear = userVM.academicYear
+            print("debug")
+        }) {
             NavigationStack {
                 PreferencesView(checkWelcomeView: $checkWelcomeView)
             }
@@ -136,7 +141,7 @@ extension HomeView {
             
             VStack(alignment: .leading) {
                 Text("\(userVM.name) \(userVM.surname)")
-                Text("Student, \(userVM.academicYear) year")
+                Text("Student, \(academicYear) year")
                 Text(userVM.index)
             }
             .foregroundStyle(.secondary)
