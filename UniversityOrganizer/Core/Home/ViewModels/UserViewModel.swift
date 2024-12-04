@@ -9,7 +9,16 @@ import SwiftUI
 import SwiftData
 
 @Observable class UserViewModel {
+    var profileImage: UIImage?
+    
     private let user = User.shared
+    private let fileManager = LocalFileManager.shared
+    private let folderName = "user_profile_picture"
+    private let imageName = "profile_picture"
+    
+    init() {
+        loadProfilePicture()
+    }
     
     var name: String {
         get { user.name }
@@ -41,6 +50,24 @@ import SwiftData
         set { user.academicYear = newValue.rawValue }
     }
     
+    func loadProfilePicture() {
+        profileImage = fileManager.getImage(imageName: imageName, folderName: folderName)
+    }
+    
+    func saveProfilePicture(from data: Data) {
+        guard let image = UIImage(data: data) else {
+            print("Failed to create image from data.")
+            return
+        }
+        
+        Task {
+            fileManager.saveImage(image: image, imageName: imageName, folderName: folderName)
+            DispatchQueue.main.async {
+                self.profileImage = image
+            }
+        }
+    }
+    
     func updateUser(name: String, surname: String, index: String, university: String, degree: String, academicYear: AcademicYear) {
         self.name = name
         self.surname = surname
@@ -57,6 +84,8 @@ import SwiftData
         university = ""
         degree = ""
         academicYear = .first
+        fileManager.deleteImage(imageName: imageName, folderName: folderName)
+        loadProfilePicture()
     }
     
     func handleSecurityScopedFile(fileURL: URL, context: ModelContext) {
@@ -75,4 +104,6 @@ import SwiftData
             print("failed to clear all subject data from swiftdata")
         }
     }
+    
+    
 }

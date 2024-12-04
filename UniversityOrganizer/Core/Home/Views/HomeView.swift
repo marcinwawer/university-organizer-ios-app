@@ -19,6 +19,7 @@ struct HomeView: View {
     
     @State private var showPreferencesView = false
     @State private var upcomingSubject: Subject?
+    @State private var academicYear = AcademicYear.first
     
     var safeAreaInsets: EdgeInsets
     
@@ -66,8 +67,12 @@ struct HomeView: View {
         }
         .onAppear {
             loadUpcomingClass()
+            academicYear = userVM.academicYear
         }
-        .sheet(isPresented: $showPreferencesView) {
+        .sheet(isPresented: $showPreferencesView, onDismiss: {
+            academicYear = userVM.academicYear
+            print("debug")
+        }) {
             NavigationStack {
                 PreferencesView(checkWelcomeView: $checkWelcomeView)
             }
@@ -118,13 +123,25 @@ extension HomeView {
     
     private var userInfo: some View {
         HStack() {
-            Circle()
-                .frame(width: 100, height: 100)
-                .padding(.trailing)
+            if let profileImage = userVM.profileImage {
+                Image(uiImage: profileImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .padding(.trailing)
+            } else {
+                Image("no-profile-picture")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .padding(.trailing)
+            }
             
             VStack(alignment: .leading) {
                 Text("\(userVM.name) \(userVM.surname)")
-                Text("Student, \(userVM.academicYear) year")
+                Text("Student, \(academicYear) year")
                 Text(userVM.index)
             }
             .foregroundStyle(.secondary)

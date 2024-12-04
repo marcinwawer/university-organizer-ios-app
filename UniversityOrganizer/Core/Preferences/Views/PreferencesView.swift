@@ -30,7 +30,7 @@ struct PreferencesView: View {
                 darkModeOption
                 academicYearOption
                 colorsOption
-                profilePictrueOption
+                ProfilePicturePickerView()
                 Spacer()
                 resetButton
             }
@@ -38,8 +38,8 @@ struct PreferencesView: View {
         .onAppear {
             academicYear = vm.academicYear
         }
-        .onDisappear {
-            vm.academicYear = academicYear
+        .onChange(of: academicYear) { _, newValue in
+            vm.academicYear = newValue
         }
         .navigationTitle("Preferences")
         .navigationBarTitleDisplayMode(.inline)
@@ -109,25 +109,6 @@ extension PreferencesView {
         }
         .navigationDestination(isPresented: $showColors) {
             ColorPickerView()
-        }
-    }
-    
-    private var profilePictrueOption: some View {
-        HStack {
-            Text("🧏‍♂️ Choose Profile Picture")
-            Spacer()
-            Image(systemName: "chevron.right")
-        }
-        .padding()
-        .padding(.vertical, 6)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .padding(.horizontal)
-        .onTapGesture {
-            showProfilePictures = true
-        }
-        .navigationDestination(isPresented: $showProfilePictures) {
-            EmptyView()
         }
     }
     
