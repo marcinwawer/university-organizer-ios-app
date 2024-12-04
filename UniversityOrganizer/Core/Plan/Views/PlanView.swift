@@ -11,9 +11,11 @@ import SwiftData
 struct PlanView: View {
     @Environment(\.modelContext) private var context
     @Environment(PlanViewModel.self) private var vm
-//    @State private var vm = PlanViewModel()
     
     @State private var chosenDay = 0
+    @State private var opacityAnimation = 0.0
+    
+    private var opacityAnimationDuration = 0.2
     
     var body: some View {
         VStack {
@@ -37,11 +39,13 @@ struct PlanView: View {
                     }
                 }
             }
-            .onAppear {
-                chosenDay = vm.getTodayDayAsInt()
-            }
+            .opacity(opacityAnimation)
+            .onAppear(perform: onAppearFunc)
+            .onDisappear {
+                opacityAnimation = 0
+            } 
             .onChange(of: chosenDay) { _, newValue in
-                vm.fetchSubjectsForDay(newValue, context: context)
+                onChangeFunc(newValue: newValue)
             }
             .scrollIndicators(.hidden)
         }
@@ -53,6 +57,8 @@ struct PlanView: View {
     PlanView()
         .environment(DeveloperPreview.shared.planVM)
 }
+
+// MARK: COMPONENTS
 
 extension PlanView {
     private var title: some View {
@@ -79,5 +85,30 @@ extension PlanView {
         }
         .pickerStyle(.segmented)
         .padding()
+    }
+}
+
+// MARK: FUNCTIONS
+
+extension PlanView {
+    private func onChangeFunc(newValue: Int) {
+        withAnimation(.easeOut(duration: opacityAnimationDuration)) {
+            opacityAnimation = 0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + opacityAnimationDuration) {
+            vm.fetchSubjectsForDay(newValue, context: context)
+            withAnimation(.easeIn(duration: opacityAnimationDuration)) {
+                opacityAnimation = 1
+            }
+        }
+    }
+    
+    private func onAppearFunc() {
+        chosenDay = vm.getTodayDayAsInt()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            withAnimation(.easeIn(duration: opacityAnimationDuration)) {
+                opacityAnimation = 1
+            }
+        }
     }
 }

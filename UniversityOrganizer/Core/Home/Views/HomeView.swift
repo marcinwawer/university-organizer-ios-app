@@ -91,7 +91,8 @@ struct HomeView: View {
     }
 }
 
-// MARK: VARIABLES
+// MARK: COMPONENTS
+
 extension HomeView {
     private var header: some View {
         HStack {
@@ -219,6 +220,7 @@ extension HomeView {
 }
 
 // MARK: FUNCTIONS
+
 extension HomeView {
     func newsView(text: String) -> some View {
         HStack {
