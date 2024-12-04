@@ -39,6 +39,7 @@ struct PlanView: View {
             }
             .onAppear {
                 vm.fetchSubjectsForDay(0, context: context)
+                chosenDay = 0
             }
             .onChange(of: chosenDay) { _, newValue in
                 vm.fetchSubjectsForDay(newValue, context: context)

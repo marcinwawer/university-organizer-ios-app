@@ -13,7 +13,7 @@ struct SubjectView: View {
     var body: some View {
         ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(Color.theme.background)
+                .foregroundStyle(subject.getColor() ?? Color.theme.background)
                 .customShadow()
             
             VStack(alignment: .leading) {

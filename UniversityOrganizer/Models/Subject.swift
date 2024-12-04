@@ -6,7 +6,7 @@
 //
 
 import SwiftData
-import Foundation
+import SwiftUI
 
 enum SubjectType: String, Codable, CaseIterable {
     case lecture = "W"
@@ -28,12 +28,23 @@ class Subject: Identifiable {
     var schedules: [Schedule] = []
     var room: String?
     var building: String?
+    var colorHex: String?
     
-    init(name: String, type: SubjectType, room: String? = nil, building: String? = nil) {
+    init(name: String, type: SubjectType, room: String? = nil, building: String? = nil, color: Color? = nil) {
         self.name = name
         self.type = type.rawValue
         self.room = room
         self.building = building
+        self.colorHex = color?.toHex()
+    }
+    
+    func getColor() -> Color? {
+        guard let hex = colorHex else { return nil }
+        return Color(hex: hex)
+    }
+    
+    func setColor(_ color: Color) {
+        self.colorHex = color.toHex()
     }
 }
 
