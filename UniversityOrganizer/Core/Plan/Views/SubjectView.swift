@@ -9,15 +9,17 @@ import SwiftUI
 
 struct SubjectView: View {
     var subject: Subject
+    var lineLimit: Int
+    var defaultColor: Bool
     
     var body: some View {
         ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(subject.getColor() ?? Color.theme.background)
+                .foregroundStyle(defaultColor ? Color.theme.background : (subject.getColor() ?? Color.theme.background))
                 .customShadow()
             
             VStack(alignment: .leading) {
-                Text("\(subject.type) - \(subject.name)") 
+                Text("[\(subject.type)] \(subject.name)") 
                     .font(.title2)
                 
                 Spacer()
@@ -38,12 +40,12 @@ struct SubjectView: View {
                 }
             }
             .padding()
-            .lineLimit(1)
+            .lineLimit(lineLimit)
         }
-        .frame(height: 140)
+        .frame(minHeight: 140, maxHeight: 160)
     }
 }
 
 #Preview {
-    SubjectView(subject: DeveloperPreview.shared.subject)
+    SubjectView(subject: DeveloperPreview.shared.subject, lineLimit: 2, defaultColor: false)
 }

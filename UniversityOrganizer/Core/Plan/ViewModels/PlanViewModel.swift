@@ -24,6 +24,10 @@ import SwiftData
         } catch {
             print("error fetching data: \(error)")
         }
+        
+        for subject in subjects {
+            print(subject.name)
+        }
     }
     
     private func sortSubjectsByEarliestStartTime(_ subjects: [Subject]) -> [Subject] {
@@ -40,6 +44,50 @@ import SwiftData
             }.min()
             
             return earliestStartTime1 ?? Date.distantFuture < earliestStartTime2 ?? Date.distantFuture
+        }
+    }
+    
+    func getTodayDayAsInt() -> Int {
+        return Calendar.current.component(.weekday, from: Date()) - 1
+    }
+    
+    func getSubjectClosestToNow(context: ModelContext) -> Subject? {
+        let today = getTodayDayAsInt()
+        fetchSubjectsForDay(today, context: context)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        
+        let currentTime = Date()
+        
+        return subjects.min { subject1, subject2 in
+            let currentSchedules1 = subject1.schedules.compactMap { schedule -> Date? in
+                let startTime = formatter.date(from: schedule.startTime)
+                let endTime = formatter.date(from: schedule.endTime)
+                if let startTime = startTime, let endTime = endTime {
+                    if currentTime >= startTime && currentTime <= endTime {
+                        return startTime
+                    } else if currentTime < startTime {
+                        return startTime
+                    }
+                }
+                return nil
+            }.min()
+            
+            let currentSchedules2 = subject2.schedules.compactMap { schedule -> Date? in
+                let startTime = formatter.date(from: schedule.startTime)
+                let endTime = formatter.date(from: schedule.endTime)
+                if let startTime = startTime, let endTime = endTime {
+                    if currentTime >= startTime && currentTime <= endTime {
+                        return startTime
+                    } else if currentTime < startTime {
+                        return startTime
+                    }
+                }
+                return nil
+            }.min()
+            
+            return currentSchedules1 ?? Date.distantFuture < currentSchedules2 ?? Date.distantFuture
         }
     }
 }

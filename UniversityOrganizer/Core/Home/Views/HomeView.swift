@@ -9,13 +9,16 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.modelContext) private var context
     
-    @Environment(UserViewModel.self) private var vm
+    @Environment(UserViewModel.self) private var userVM
+    @Environment(PlanViewModel.self) private var planVM
     
     @Binding var activeTab: TabModel
     @Binding var checkWelcomeView: Bool
     
     @State private var showPreferencesView = false
+    @State private var upcomingSubject: Subject?
     
     var safeAreaInsets: EdgeInsets
     
@@ -61,6 +64,9 @@ struct HomeView: View {
             
             Spacer()
         }
+        .onAppear {
+            loadUpcomingClass()
+        }
         .sheet(isPresented: $showPreferencesView) {
             NavigationStack {
                 PreferencesView(checkWelcomeView: $checkWelcomeView)
@@ -70,26 +76,17 @@ struct HomeView: View {
         .safeAreaPadding(.bottom, 100)
         .ignoresSafeArea()
     }
-    
-    func newsView(text: String) -> some View {
-        HStack {
-            Image(systemName: "circle.fill")
-                .font(.caption)
-            
-            Text(text)
-            
-            Spacer()
-        }
-    }
 }
 
 #Preview {
     GeometryReader { geo in
         HomeView(activeTab: .constant(TabModel.home), checkWelcomeView: .constant(true), safeAreaInsets: geo.safeAreaInsets)
             .environment(DeveloperPreview.shared.userVM)
+            .environment(DeveloperPreview.shared.planVM)
     }
 }
 
+// MARK: VARIABLES
 extension HomeView {
     private var header: some View {
         HStack {
@@ -102,7 +99,7 @@ extension HomeView {
             
             Spacer()
             
-            Text("Hi, \(vm.name) 🚀")
+            Text("Hi, \(userVM.name) 🚀")
                 .font(.largeTitle)
                 .fontWeight(.semibold)
             Spacer()
@@ -111,8 +108,8 @@ extension HomeView {
     
     private var universityInfo: some View {
         Group {
-            Text(vm.university)
-            Text(vm.degree)
+            Text(userVM.university)
+            Text(userVM.degree)
         }
         .font(.callout)
         .foregroundStyle(.secondary)
@@ -126,9 +123,9 @@ extension HomeView {
                 .padding(.trailing)
             
             VStack(alignment: .leading) {
-                Text("\(vm.name) \(vm.surname)")
-                Text("Student, \(vm.academicYear) year")
-                Text(vm.index)
+                Text("\(userVM.name) \(userVM.surname)")
+                Text("Student, \(userVM.academicYear) year")
+                Text(userVM.index)
             }
             .foregroundStyle(.secondary)
             .font(.callout)
@@ -178,46 +175,48 @@ extension HomeView {
         }
     }
     
-    private var upcomingClassSection : some View {
-        VStack(spacing: 0) {
-            HStack {
-                Image(systemName: "calendar.circle")
-                Text("Upcoming class")
-                Spacer()
-            }
-            .padding()
-            .font(.title)
-            
-            ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color.theme.background)
-                    .customShadow()
-                
-                VStack(alignment: .leading) {
-                    Text("Cybersecurity Lab") //TODO: vm
-                        .font(.title2)
-                    
+    private var upcomingClassSection: some View {
+        Group {
+            VStack(spacing: 0) {
+                HStack {
+                    Image(systemName: "calendar.circle")
+                    Text("Upcoming class")
                     Spacer()
-                    
-                    Text("Friday, 14 October") //TODO: vm
-                    
-                    HStack {
-                        Image(systemName: "timer.circle")
-                        Text("10:00 - 12:00") //TODO: vm
-                    }
-                    
-                    HStack {
-                        Image(systemName: "timer.circle")
-                        Text("Z-7, 188") //TODO: vm
-                    }
                 }
                 .padding()
-                .lineLimit(1)
+                .font(.title)
+                if let subject = upcomingSubject {
+                    SubjectView(subject: subject, lineLimit: 1, defaultColor: true)
+                        .padding(.horizontal, 40)
+                        .onTapGesture {
+                            activeTab = .plan
+                        }
+                } else {
+                    Text("No upcoming classes")
+                        .padding(.horizontal, 40)
+                        .foregroundStyle(.secondary)
+                }
             }
-            .padding(.horizontal, 40)
-            .onTapGesture {
-                activeTab = .plan
-            }
+        }
+    }
+}
+
+// MARK: FUNCTIONS
+extension HomeView {
+    func newsView(text: String) -> some View {
+        HStack {
+            Image(systemName: "circle.fill")
+                .font(.caption)
+            
+            Text(text)
+            
+            Spacer()
+        }
+    }
+    
+    private func loadUpcomingClass() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            upcomingSubject = planVM.getSubjectClosestToNow(context: context)
         }
     }
 }

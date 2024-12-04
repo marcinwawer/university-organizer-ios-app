@@ -10,8 +10,8 @@ import SwiftData
 
 struct PlanView: View {
     @Environment(\.modelContext) private var context
-    
-    @State private var vm = PlanViewModel()
+    @Environment(PlanViewModel.self) private var vm
+//    @State private var vm = PlanViewModel()
     
     @State private var chosenDay = 0
     
@@ -32,14 +32,13 @@ struct PlanView: View {
                     .padding(.top, 100)
                 } else {
                     ForEach(vm.subjects) { subject in
-                        SubjectView(subject: subject)
+                        SubjectView(subject: subject, lineLimit: 2, defaultColor: false)
                             .padding(.horizontal, 20)
                     }
                 }
             }
             .onAppear {
-                vm.fetchSubjectsForDay(0, context: context)
-                chosenDay = 0
+                chosenDay = vm.getTodayDayAsInt()
             }
             .onChange(of: chosenDay) { _, newValue in
                 vm.fetchSubjectsForDay(newValue, context: context)
@@ -52,6 +51,7 @@ struct PlanView: View {
 
 #Preview {
     PlanView()
+        .environment(DeveloperPreview.shared.planVM)
 }
 
 extension PlanView {

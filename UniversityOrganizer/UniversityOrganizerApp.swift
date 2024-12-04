@@ -12,11 +12,13 @@ import SwiftData
 struct UniversityOrganizerApp: App {
     @AppStorage("appearance") private var appearance: Appearance = .light
     @State private var vm = UserViewModel()
+    @State private var planVM = PlanViewModel()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(vm)
+                .environment(planVM)
                 .modelContainer(for: Subject.self)
                 .preferredColorScheme(appearance.colorScheme)
         }
