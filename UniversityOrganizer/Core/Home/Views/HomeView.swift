@@ -118,9 +118,21 @@ extension HomeView {
     
     private var userInfo: some View {
         HStack() {
-            Circle()
-                .frame(width: 100, height: 100)
-                .padding(.trailing)
+            if let profileImage = userVM.profileImage {
+                Image(uiImage: profileImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .padding(.trailing)
+            } else {
+                Image("no-profile-picture")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .padding(.trailing)
+            }
             
             VStack(alignment: .leading) {
                 Text("\(userVM.name) \(userVM.surname)")

@@ -54,10 +54,12 @@ struct ContentView: View {
             .animation(.easeIn, value: checkWelcomeView)
             
             if checkWelcomeView {
-                WelcomeView(checkWelcomeView: $checkWelcomeView)
-                    .opacity(checkWelcomeView ? 1 : 0)
-                    .animation(.easeOut, value: checkWelcomeView)
-                    .zIndex(1)
+                NavigationStack {
+                    WelcomeView(checkWelcomeView: $checkWelcomeView)
+                        .opacity(checkWelcomeView ? 1 : 0)
+                        .animation(.easeOut, value: checkWelcomeView)
+                        .zIndex(1)
+                }
             }
         }
         .onAppear {

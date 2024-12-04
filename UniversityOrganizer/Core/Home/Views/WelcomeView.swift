@@ -45,7 +45,7 @@ struct WelcomeView: View {
                     
                     academicYearOption
                     
-                    profilePictrueOption
+                    ProfilePicturePickerView()
                 }
                 .navigationTitle("Set your info! 🤩")
                 .toolbarBackground(LinearGradient.customGradient)
@@ -213,22 +213,6 @@ extension WelcomeView {
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal)
-    }
-    
-    private var profilePictrueOption: some View {
-        HStack {
-            Text("🧏‍♂️ Choose profile picture")
-            Spacer()
-            Image(systemName: "chevron.right")
-        }
-        .padding()
-        .padding(.vertical, 6)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .padding(.horizontal)
-        .onTapGesture {
-            showProfilePictures = true
-        }
     }
     
     private var uploadPlanButton: some View {
