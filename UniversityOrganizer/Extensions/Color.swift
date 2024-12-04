@@ -31,6 +31,28 @@ extension Color {
             opacity: Double(a) / 255
         )
     }
+    
+    func toHex() -> String? {
+        guard let components = self.cgColor?.components, components.count >= 3 else {
+            return nil
+        }
+        
+        let r = components[0]
+        let g = components[1]
+        let b = components[2]
+        let a = components.count > 3 ? components[3] : 1.0
+        
+        let red = Int(r * 255)
+        let green = Int(g * 255)
+        let blue = Int(b * 255)
+        let alpha = Int(a * 255)
+        
+        if alpha < 255 {
+            return String(format: "#%02X%02X%02X%02X", alpha, red, green, blue)
+        } else {
+            return String(format: "#%02X%02X%02X", red, green, blue)
+        }
+    }
 }
 
 extension Color {

@@ -68,7 +68,7 @@ import SwiftData
         }
     }
     
-    func deleteAllSubjects(context: ModelContext) {
+    func clearSwiftData(context: ModelContext) {
         do {
             try context.delete(model: Subject.self)
         } catch {

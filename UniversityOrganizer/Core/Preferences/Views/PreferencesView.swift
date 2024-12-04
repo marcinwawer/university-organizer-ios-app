@@ -108,8 +108,8 @@ extension PreferencesView {
             showColors = true
         }
         .navigationDestination(isPresented: $showColors) {
-            EmptyView()
-        } //TODO: VM
+            ColorPickerView()
+        }
     }
     
     private var profilePictrueOption: some View {
@@ -134,7 +134,7 @@ extension PreferencesView {
     private var resetButton: some View {
         Button {
             vm.resetUserData()
-            vm.deleteAllSubjects(context: context)
+            vm.clearSwiftData(context: context)
             showWelcomeView = true
             checkWelcomeView = true
             dismiss()
@@ -146,7 +146,7 @@ extension PreferencesView {
                 .frame(maxWidth: .infinity)
                 .background(Color.theme.red)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .shadow(color: Color.theme.blue.opacity(0.5), radius: 10)
+                .shadow(color: Color.theme.red.opacity(0.5), radius: 10)
         }
         .padding(.horizontal)
     }

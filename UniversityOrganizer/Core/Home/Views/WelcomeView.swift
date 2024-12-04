@@ -86,6 +86,9 @@ struct WelcomeView: View {
                 print("error choosing file: \(error.localizedDescription)")
             }
         }
+        .sheet(isPresented: $showProfilePictures) {
+            EmptyView()
+        }
     }
 }
 
@@ -225,9 +228,6 @@ extension WelcomeView {
         .padding(.horizontal)
         .onTapGesture {
             showProfilePictures = true
-        }
-        .navigationDestination(isPresented: $showProfilePictures) {
-            EmptyView()
         }
     }
     

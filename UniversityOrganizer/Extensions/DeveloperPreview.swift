@@ -12,4 +12,6 @@ class DeveloperPreview {
     private init() {}
     
     let userVM = UserViewModel()
+    let planVM = PlanViewModel()
+    let subject = Subject(name: "Cybersecurity Cybersecurity Cybersecurity Cybersecurity", type: SubjectType.lecture, room: "200", building: "D-1")
 }
