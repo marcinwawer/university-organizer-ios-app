@@ -10,6 +10,7 @@ import SwiftData
 
 @Observable class PlanViewModel {
     var subjects: [Subject] = []
+    var shownDay = 0
     
     func fetchSubjectsForDay(_ day: Int, context: ModelContext) {
         do {
@@ -47,16 +48,22 @@ import SwiftData
         }
     }
     
-    func getTodayDayAsInt() -> Int {
-        let weekday = Calendar.current.component(.weekday, from: Date())
-        return (weekday == 1) ? 6 : weekday - 2
-    }
-    
     func getSubjectClosestToNow(context: ModelContext) -> Subject? {
         let today = getTodayDayAsInt()
+        shownDay = today
         fetchSubjectsForDay(today, context: context)
         
         let currentTime = getCurrentTimeString()
+        
+        if let lastSubject = subjects.last,
+           let lastEndTime = lastSubject.schedules.compactMap({ schedule in
+               return schedule.endTime
+           }).max(), currentTime > lastEndTime {
+            
+            let nextDay = today == 6 ? 0 : today + 1
+            shownDay = nextDay
+            fetchSubjectsForDay(nextDay, context: context)
+        }
         
         return subjects.min { subject1, subject2 in
             let currentSchedules1 = findEarliestStartTime(for: subject1.schedules, currentTime: currentTime) ?? "23:59"
@@ -77,6 +84,11 @@ import SwiftData
             }
             return nil
         }.min()
+    }
+    
+    private func getTodayDayAsInt() -> Int {
+        let weekday = Calendar.current.component(.weekday, from: Date())
+        return (weekday == 1) ? 6 : weekday - 2
     }
     
     private func getCurrentTimeString() -> String {

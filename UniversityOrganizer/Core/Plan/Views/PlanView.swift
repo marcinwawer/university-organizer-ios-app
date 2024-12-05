@@ -104,7 +104,7 @@ extension PlanView {
     }
     
     private func onAppearFunc() {
-        chosenDay = vm.getTodayDayAsInt()
+        chosenDay = vm.shownDay
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             withAnimation(.easeIn(duration: opacityAnimationDuration)) {
                 opacityAnimation = 1
