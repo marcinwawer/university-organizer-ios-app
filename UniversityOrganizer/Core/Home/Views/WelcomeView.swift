@@ -21,7 +21,6 @@ struct WelcomeView: View {
     @State private var university = ""
     @State private var degree = ""
     @State private var academicYear = AcademicYear.first
-    
     @State private var showProfilePictures = false
     @State private var importing = false
     

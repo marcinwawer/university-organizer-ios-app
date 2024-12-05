@@ -18,7 +18,7 @@ struct NoClassesView: View {
                 .font(.title)
                 .fontWeight(.semibold)
             
-            Text("You probably did not import any ics file with your plan. Give it a check and return here!")
+            Text("You probably did not import any ics file with your plan. Give it a check and come back here!")
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 20)

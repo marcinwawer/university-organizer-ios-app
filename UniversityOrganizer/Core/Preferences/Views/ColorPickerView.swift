@@ -15,29 +15,36 @@ struct ColorPickerView: View {
     @State private var vm = ColorPickerViewModel()
     
     var body: some View {
-        VStack {
-            if (subjects.isEmpty) {
-                NoClassesView()
-            } else {
-                List(vm.uniqueSubjects(from: subjects)) { subject in
-                    ColorPicker(subject.name, selection: Binding(
-                        get: {
-                            vm.selectedColors[subject.id] ?? Color.theme.background
-                        },
-                        set: { newColor in
-                            vm.updateSubjectColor(subject, to: newColor, subjects: subjects, context: context)
-                        }
-                    ))
+        ZStack {
+            LinearGradient.customGradient
+                .ignoresSafeArea()
+            
+            VStack {
+                if (subjects.isEmpty) {
+                    NoClassesView()
+                } else {
+                    List(vm.uniqueSubjects(from: subjects)) { subject in
+                        ColorPicker(subject.name, selection: Binding(
+                            get: {
+                                vm.selectedColors[subject.id] ?? Color.theme.background
+                            },
+                            set: { newColor in
+                                vm.updateSubjectColor(subject, to: newColor, subjects: subjects, context: context)
+                            }
+                        ))
+                        .listRowBackground(Color.theme.background.opacity(0.2))
+                    }
+                    .scrollContentBackground(.hidden)
+                    
+                    Spacer()
+                    
+                    resetButton
                 }
-                
-                Spacer()
-                
-                resetButton
             }
-        }
-        .navigationTitle("Select Colors for Classes")
-        .onAppear {
-            vm.initializeColors(from: subjects)
+            .navigationTitle("Select Colors for Classes")
+            .onAppear {
+                vm.initializeColors(from: subjects)
+            }
         }
     }
 }
