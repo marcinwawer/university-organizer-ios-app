@@ -56,39 +56,32 @@ import SwiftData
         let today = getTodayDayAsInt()
         fetchSubjectsForDay(today, context: context)
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        
-        let currentTime = Date()
+        let currentTime = getCurrentTimeString()
         
         return subjects.min { subject1, subject2 in
-            let currentSchedules1 = subject1.schedules.compactMap { schedule -> Date? in
-                let startTime = formatter.date(from: schedule.startTime)
-                let endTime = formatter.date(from: schedule.endTime)
-                if let startTime = startTime, let endTime = endTime {
-                    if currentTime >= startTime && currentTime <= endTime {
-                        return startTime
-                    } else if currentTime < startTime {
-                        return startTime
-                    }
-                }
-                return nil
-            }.min()
+            let currentSchedules1 = findEarliestStartTime(for: subject1.schedules, currentTime: currentTime) ?? "23:59"
+            let currentSchedules2 = findEarliestStartTime(for: subject2.schedules, currentTime: currentTime) ?? "23:59"
             
-            let currentSchedules2 = subject2.schedules.compactMap { schedule -> Date? in
-                let startTime = formatter.date(from: schedule.startTime)
-                let endTime = formatter.date(from: schedule.endTime)
-                if let startTime = startTime, let endTime = endTime {
-                    if currentTime >= startTime && currentTime <= endTime {
-                        return startTime
-                    } else if currentTime < startTime {
-                        return startTime
-                    }
-                }
-                return nil
-            }.min()
-            
-            return currentSchedules1 ?? Date.distantFuture < currentSchedules2 ?? Date.distantFuture
+            return currentSchedules1 < currentSchedules2
         }
+    }
+    
+    private func findEarliestStartTime(for schedules: [Schedule], currentTime: String) -> String? {
+        return schedules.compactMap { schedule -> String? in
+            let startTime = schedule.startTime
+            let endTime = schedule.endTime
+            if currentTime >= startTime && currentTime <= endTime {
+                return startTime
+            } else if currentTime < startTime {
+                return startTime
+            }
+            return nil
+        }.min()
+    }
+    
+    private func getCurrentTimeString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: Date())
     }
 }
