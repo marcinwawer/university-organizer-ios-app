@@ -30,56 +30,11 @@ struct TasksView: View {
             
             ZStack {
                 if chosenType == 0 {
-                    List(vm.todos) { todo in
-                        TaskListRowView(task: todo)
-                            .onTapGesture {
-                                withAnimation(.linear) {
-                                    vm.markAsDone(todo)
-                                }
-                                
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                                    vm.tasks = tasks
-                                })
-                            }
-                            .listRowSeparator(.hidden)
-                    }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
-                    .animation(.easeOut, value: vm.todos)
+                    todosList
                 } else if chosenType == 1 {
-                    List(vm.deadlines) { deadline in
-                        TaskListRowView(task: deadline)
-                            .onTapGesture {
-                                withAnimation(.linear) {
-                                    vm.markAsDone(deadline)
-                                }
-                                
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                                    vm.tasks = tasks
-                                })
-                            }
-                            .listRowSeparator(.hidden)
-                    }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
-                    .animation(.easeOut, value: vm.todos)
+                    deadlinesList
                 } else if chosenType == 2 {
-                    List(vm.done) { task in
-                        TaskListRowView(task: task)
-                            .onTapGesture {
-                                withAnimation(.linear) {
-                                    vm.markAsUndone(task)
-                                }
-                                
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                                    vm.tasks = tasks
-                                })
-                            }
-                            .listRowSeparator(.hidden)
-                    }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
-                    .animation(.easeOut, value: vm.todos)
+                    doneList
                 }
             }
             .animation(.easeInOut(duration: 0.5), value: chosenType)
@@ -139,5 +94,62 @@ extension TasksView {
                 Text("New Task")
             }
         }
+    }
+    
+    private var todosList: some View {
+        List(vm.todos) { todo in
+            TaskListRowView(task: todo)
+                .onTapGesture {
+                    withAnimation(.linear) {
+                        vm.markAsDone(todo)
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                        vm.tasks = tasks
+                    })
+                }
+                .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .animation(.easeOut, value: vm.todos)
+    }
+    
+    private var deadlinesList: some View {
+        List(vm.deadlines) { deadline in
+            TaskListRowView(task: deadline)
+                .onTapGesture {
+                    withAnimation(.linear) {
+                        vm.markAsDone(deadline)
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                        vm.tasks = tasks
+                    })
+                }
+                .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .animation(.easeOut, value: vm.todos)
+    }
+    
+    private var doneList: some View {
+        List(vm.done) { task in
+            TaskListRowView(task: task)
+                .onTapGesture {
+                    withAnimation(.linear) {
+                        vm.markAsUndone(task)
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                        vm.tasks = tasks
+                    })
+                }
+                .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .animation(.easeOut, value: vm.todos)
     }
 }
