@@ -5,8 +5,6 @@
 //  Created by Marcin Wawer on 03/11/2024.
 //
 
-// safeAreaPadding(.bottom, 60) !
-
 import SwiftUI
 
 struct ContentView: View {
