@@ -51,16 +51,4 @@ import SwiftData
             print("Failed to save changes: \(error)")
         }
     }
-    
-    func uniqueSubjects(from subjects: [Subject]) -> [Subject] {
-        var seenNames: Set<String> = []
-        return subjects.filter { subject in
-            if seenNames.contains(subject.name) {
-                return false
-            } else {
-                seenNames.insert(subject.name)
-                return true
-            }
-        }
-    }
 }
