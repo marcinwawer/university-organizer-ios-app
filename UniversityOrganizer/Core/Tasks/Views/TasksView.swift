@@ -10,8 +10,10 @@ import SwiftData
 
 struct TasksView: View {
     @Query private var tasks: [Todo]
-    @State private var vm: TasksViewModel
+    @Query private var subjects: [Subject]
     
+    @State private var vm: TasksViewModel
+    @State private var showAlert = false
     @State private var chosenType = 0
     @State private var showAddTaskView = false
     
@@ -52,6 +54,9 @@ struct TasksView: View {
                 AddTaskView()
             }
         }
+        .alert("You can't add any tasks, because there are no subjects.", isPresented: $showAlert) {
+            Button("OK", role: .cancel) { }
+        }
     }
 }
 
@@ -86,7 +91,7 @@ extension TasksView {
     
     private var addTaskButton: some View {
         Button {
-            showAddTaskView = true
+            subjects.isEmpty ? (showAlert = true) : (showAddTaskView = true)
         } label: {
             HStack {
                 Image(systemName: "plus.circle")
