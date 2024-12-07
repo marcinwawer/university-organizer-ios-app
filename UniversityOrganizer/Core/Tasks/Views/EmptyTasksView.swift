@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct EmptyTasksView: View {
+    let taskType: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Image(systemName: "pencil.slash")
+            .resizable()
+            .frame(width: 50, height: 50)
+            .foregroundStyle(.secondary)
+        
+        Text("There are no \(taskType)! 🤓")
+            .font(.title)
+            .fontWeight(.semibold)
     }
 }
 
 #Preview {
-    EmptyTasksView()
+    EmptyTasksView(taskType: "todos")
 }

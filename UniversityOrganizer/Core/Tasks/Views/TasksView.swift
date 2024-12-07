@@ -32,11 +32,33 @@ struct TasksView: View {
             
             ZStack {
                 if chosenType == 0 {
-                    todosList
+                    if vm.todos.isEmpty {
+                        VStack {
+                            EmptyTasksView(taskType: "todos")
+                        }
+                        .padding(.top, 100)
+                    } else {
+                        todosList
+                    }
                 } else if chosenType == 1 {
-                    deadlinesList
+                    if vm.deadlines.isEmpty {
+                        VStack {
+                            EmptyTasksView(taskType: "deadlines")
+                        }
+                        .padding(.top, 100)
+                    } else {
+                        deadlinesList
+                    }
                 } else if chosenType == 2 {
-                    doneList
+                    if vm.done.isEmpty {
+                        VStack {
+                            EmptyTasksView(taskType: "done tasks")
+                        }
+                        .padding(.top, 100)
+                    }
+                    else {
+                        doneList
+                    }
                 }
             }
             .animation(.easeInOut(duration: 0.5), value: chosenType)
