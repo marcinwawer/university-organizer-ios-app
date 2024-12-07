@@ -19,7 +19,7 @@ struct UniversityOrganizerApp: App {
             ContentView()
                 .environment(vm)
                 .environment(planVM)
-                .modelContainer(for: Subject.self)
+                .modelContainer(for: [Subject.self, Todo.self])
                 .preferredColorScheme(appearance.colorScheme)
         }
     }

@@ -5,8 +5,6 @@
 //  Created by Marcin Wawer on 03/11/2024.
 //
 
-// safeAreaPadding(.bottom, 60) !
-
 import SwiftUI
 
 struct ContentView: View {
@@ -27,7 +25,7 @@ struct ContentView: View {
                         }
                         
                         Tab.init(value: .tasks) {
-                            Text("Tasks")
+                            TasksView()
                                 .toolbarVisibility(.hidden, for: .tabBar)
                         }
                         

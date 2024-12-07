@@ -12,6 +12,22 @@ import SwiftData
     var subjects: [Subject] = []
     var shownDay = 0
     
+    func uniqueSubjects(from subjects: [Subject]) -> [Subject] {
+        var seenNames: Set<String> = []
+        return subjects.filter { subject in
+            if seenNames.contains(subject.name) {
+                return false
+            } else {
+                seenNames.insert(subject.name)
+                return true
+            }
+        }
+    }
+    
+    func getSubjectFromId(from subjects: [Subject], id: UUID) -> Subject? {
+        return subjects.first(where: { $0.id == id })
+    }
+    
     func fetchSubjectsForDay(_ day: Int, context: ModelContext) {
         do {
             let descriptor = FetchDescriptor<Subject>(
@@ -55,21 +71,33 @@ import SwiftData
         
         let currentTime = getCurrentTimeString()
         
-        if let lastSubject = subjects.last,
-           let lastEndTime = lastSubject.schedules.compactMap({ schedule in
-               return schedule.endTime
-           }).max(), currentTime > lastEndTime {
-            
-            let nextDay = today == 6 ? 0 : today + 1
+        if isAllDoneForToday(currentDay: today, currentTime: currentTime) {
+            let nextDay = nextAvailableDay(after: today)
             shownDay = nextDay
             fetchSubjectsForDay(nextDay, context: context)
         }
         
+        return findClosestSubject(to: currentTime, from: subjects)
+    }
+    
+    private func isAllDoneForToday(currentDay: Int, currentTime: String) -> Bool {
+        guard let lastSubject = subjects.last else {
+            return true
+        }
+        
+        let lastEndTime = lastSubject.schedules.compactMap { $0.endTime }.max() ?? "00:00"
+        return currentTime > lastEndTime
+    }
+    
+    private func nextAvailableDay(after day: Int) -> Int {
+        return day >= 6 ? 0 : day + 1
+    }
+    
+    private func findClosestSubject(to currentTime: String, from subjects: [Subject]) -> Subject? {
         return subjects.min { subject1, subject2 in
-            let currentSchedules1 = findEarliestStartTime(for: subject1.schedules, currentTime: currentTime) ?? "23:59"
-            let currentSchedules2 = findEarliestStartTime(for: subject2.schedules, currentTime: currentTime) ?? "23:59"
-            
-            return currentSchedules1 < currentSchedules2
+            let s1Time = findEarliestStartTime(for: subject1.schedules, currentTime: currentTime) ?? "23:59"
+            let s2Time = findEarliestStartTime(for: subject2.schedules, currentTime: currentTime) ?? "23:59"
+            return s1Time < s2Time
         }
     }
     

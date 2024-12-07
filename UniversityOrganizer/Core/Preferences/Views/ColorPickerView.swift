@@ -9,7 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct ColorPickerView: View {
+    @Environment(PlanViewModel.self) private var planVM
     @Environment(\.modelContext) private var context
+    
     @Query private var subjects: [Subject]
     
     @State private var vm = ColorPickerViewModel()
@@ -23,7 +25,7 @@ struct ColorPickerView: View {
                 if (subjects.isEmpty) {
                     NoClassesView()
                 } else {
-                    List(vm.uniqueSubjects(from: subjects)) { subject in
+                    List(planVM.uniqueSubjects(from: subjects)) { subject in
                         ColorPicker(subject.name, selection: Binding(
                             get: {
                                 vm.selectedColors[subject.id] ?? Color.theme.background
@@ -50,8 +52,6 @@ struct ColorPickerView: View {
 }
 
 extension ColorPickerView {
-    
-    
     private var resetButton: some View {
         Button {
             vm.resetColors(context: context, for: subjects)
@@ -72,5 +72,6 @@ extension ColorPickerView {
 #Preview {
     NavigationStack {
         ColorPickerView()
+            .environment(DeveloperPreview.shared.planVM)
     }
 }

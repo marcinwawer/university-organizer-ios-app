@@ -41,7 +41,9 @@ func parseICSFile(_ fileURL: URL, context: ModelContext) {
                 
                 if subject == nil {
                     subject = Subject(name: cleanedSummary, type: subjectType, room: room, building: building)
-                    context.insert(subject!)
+                    if let subject {
+                        context.insert(subject)
+                    }
                 }
                 
                 if let subject = subject {
