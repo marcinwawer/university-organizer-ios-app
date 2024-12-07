@@ -8,18 +8,6 @@
 import SwiftData
 import SwiftUI
 
-enum SubjectType: String, Codable, CaseIterable {
-    case lecture = "W"
-    case project = "P"
-    case practical = "Ć"
-    case laboratory = "L"
-    case seminary = "S"
-    
-    static func from(character: Character) -> SubjectType? {
-        return SubjectType.allCases.first { $0.rawValue == String(character) }
-    }
-}
-
 @Model
 class Subject: Identifiable {
     var id = UUID()
@@ -29,6 +17,8 @@ class Subject: Identifiable {
     var room: String?
     var building: String?
     var colorHex: String?
+    
+    var todos: [Todo] = []
     
     init(name: String, type: SubjectType, room: String? = nil, building: String? = nil, color: Color? = nil) {
         self.name = name
@@ -61,3 +51,14 @@ class Schedule {
     }
 }
 
+enum SubjectType: String, Codable, CaseIterable {
+    case lecture = "W"
+    case project = "P"
+    case practical = "Ć"
+    case laboratory = "L"
+    case seminary = "S"
+    
+    static func from(character: Character) -> SubjectType? {
+        return SubjectType.allCases.first { $0.rawValue == String(character) }
+    }
+}
