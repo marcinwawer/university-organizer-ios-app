@@ -86,6 +86,7 @@ import SwiftData
         academicYear = .first
         fileManager.deleteImage(imageName: imageName, folderName: folderName)
         loadProfilePicture()
+        
     }
     
     func handleSecurityScopedFile(fileURL: URL, context: ModelContext) {
@@ -100,10 +101,9 @@ import SwiftData
     func clearSwiftData(context: ModelContext) {
         do {
             try context.delete(model: Subject.self)
+            try context.delete(model: Todo.self)
         } catch {
             print("failed to clear all subject data from swiftdata")
         }
     }
-    
-    
 }

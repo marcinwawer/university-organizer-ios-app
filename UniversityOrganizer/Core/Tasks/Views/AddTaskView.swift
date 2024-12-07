@@ -15,10 +15,13 @@ struct AddTaskView: View {
     
     @Query private var subjects: [Subject]
     
+    @State var vm: TasksViewModel
     @State private var title = ""
     @State private var chosenSubjectID: UUID? = nil
     @State private var chosenType = 0
     @State private var deadline = Date()
+    @State private var showAlertSubject = false
+    @State private var showAlertTitle = false
     
     var body: some View {
         ZStack {
@@ -50,12 +53,18 @@ struct AddTaskView: View {
                     }
             }
         }
+        .alert("No subject selected!", isPresented: $showAlertSubject) {
+            Button("OK", role: .cancel) { }
+        }
+        .alert("Your task title is empty!", isPresented: $showAlertTitle) {
+            Button("OK", role: .cancel) { }
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        AddTaskView()
+        AddTaskView(vm: DeveloperPreview.shared.tasksVM)
             .environment(DeveloperPreview.shared.planVM)
     }
 }
@@ -122,7 +131,23 @@ extension AddTaskView {
     
     private var saveButton: some View {
         Button {
+            guard let chosenSubjectID = chosenSubjectID else {
+                showAlertSubject = true
+                return
+            }
             
+            guard !title.isEmpty else {
+                showAlertTitle = true
+                return
+            }
+            
+            if chosenType == 1 {
+                vm.addTask(context: context, title: title, subject: planVM.getSubjectFromId(from: subjects, id: chosenSubjectID), dueDate: deadline)
+            } else {
+                vm.addTask(context: context, title: title, subject: planVM.getSubjectFromId(from: subjects, id: chosenSubjectID))
+            }
+            
+            dismiss()
         } label: {
             Text("Save")
                 .foregroundStyle(.white)

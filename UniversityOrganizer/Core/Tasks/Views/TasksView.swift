@@ -37,6 +37,7 @@ struct TasksView: View {
                             EmptyTasksView(taskType: "todos")
                         }
                         .padding(.top, 100)
+                        .transition(.opacity)
                     } else {
                         todosList
                     }
@@ -46,6 +47,7 @@ struct TasksView: View {
                             EmptyTasksView(taskType: "deadlines")
                         }
                         .padding(.top, 100)
+                        .transition(.opacity)
                     } else {
                         deadlinesList
                     }
@@ -55,6 +57,7 @@ struct TasksView: View {
                             EmptyTasksView(taskType: "done tasks")
                         }
                         .padding(.top, 100)
+                        .transition(.opacity)   
                     }
                     else {
                         doneList
@@ -62,6 +65,7 @@ struct TasksView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.5), value: chosenType)
+            .animation(.default, value: vm.todos)
           
             Spacer()
             
@@ -71,11 +75,13 @@ struct TasksView: View {
             vm.tasks = tasks
         }
         .safeAreaPadding(.bottom, 70)
-        .sheet(isPresented: $showAddTaskView) {
+        .sheet(isPresented: $showAddTaskView, onDismiss: {
+            vm.tasks = tasks
+        }, content: {
             NavigationStack {
-                AddTaskView()
+                AddTaskView(vm: vm)
             }
-        }
+        })
         .alert("You can't add any tasks, because there are no subjects.", isPresented: $showAlert) {
             Button("OK", role: .cancel) { }
         }

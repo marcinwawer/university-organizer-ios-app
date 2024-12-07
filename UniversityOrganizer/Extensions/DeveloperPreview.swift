@@ -23,4 +23,5 @@ class DeveloperPreview {
     let todo: Todo
     let deadline: Todo
     let done: Todo
+    let tasksVM = TasksViewModel(tasks: [])
 }

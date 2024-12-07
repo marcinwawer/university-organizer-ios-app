@@ -24,6 +24,10 @@ import SwiftData
         }
     }
     
+    func getSubjectFromId(from subjects: [Subject], id: UUID) -> Subject? {
+        return subjects.first(where: { $0.id == id })
+    }
+    
     func fetchSubjectsForDay(_ day: Int, context: ModelContext) {
         do {
             let descriptor = FetchDescriptor<Subject>(

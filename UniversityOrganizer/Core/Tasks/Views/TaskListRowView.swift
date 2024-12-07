@@ -24,6 +24,7 @@ struct TaskListRowView: View {
             }
             
             Text(task.title)
+                .foregroundStyle(.secondary)
                 .offset(x: 30)
                 .padding(.bottom, 4)
                 .strikethrough(task.isDone)
@@ -31,7 +32,7 @@ struct TaskListRowView: View {
             if let date = task.dueDate {
                 Text(date, style: .date)
                     .offset(x: 30)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Date() > date ? Color.theme.red : Color.theme.green)
             }
         }
         .padding()
