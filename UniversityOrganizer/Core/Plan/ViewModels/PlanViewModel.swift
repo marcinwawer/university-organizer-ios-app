@@ -69,11 +69,12 @@ import SwiftData
         shownDay = today
         fetchSubjectsForDay(today, context: context)
         
-        let currentTime = getCurrentTimeString()
+        var currentTime = getCurrentTimeString()
         
         if isAllDoneForToday(currentDay: today, currentTime: currentTime) {
             let nextDay = nextAvailableDay(after: today)
             shownDay = nextDay
+            currentTime = "00:00"
             fetchSubjectsForDay(nextDay, context: context)
         }
         
