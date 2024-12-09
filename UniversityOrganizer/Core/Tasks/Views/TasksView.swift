@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct TasksView: View {
+    @Environment(\.modelContext) private var context
+    
     @Query private var tasks: [Todo]
     @Query private var subjects: [Subject]
     
@@ -29,6 +31,13 @@ struct TasksView: View {
             }
             .padding(.vertical)
             .background(GradientBackground())
+            
+            HStack {
+                EditButton()
+                Spacer()
+                addTaskButton
+            }
+            .padding()
             
             ZStack {
                 if chosenType == 0 {
@@ -68,8 +77,6 @@ struct TasksView: View {
             .animation(.default, value: vm.todos)
           
             Spacer()
-            
-            addTaskButton
         }
         .onAppear {
             vm.tasks = tasks
@@ -130,18 +137,26 @@ extension TasksView {
     }
     
     private var todosList: some View {
-        List(vm.todos) { todo in
-            TaskListRowView(task: todo)
-                .onTapGesture {
-                    withAnimation(.linear) {
-                        vm.markAsDone(todo)
+        List {
+            ForEach(vm.todos) { todo in
+                TaskListRowView(task: todo)
+                    .onTapGesture {
+                        withAnimation(.linear) {
+                            vm.markAsDone(todo)
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                            vm.tasks = tasks
+                        })
                     }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                        vm.tasks = tasks
-                    })
-                }
-                .listRowSeparator(.hidden)
+                    .listRowSeparator(.hidden)
+            }
+            .onMove { fromOffsets, toOffset in
+                vm.moveTask(in: &vm.todos, from: fromOffsets, to: toOffset)
+            }
+            .onDelete { indexSet in
+                vm.deleteTask(from: &vm.todos, at: indexSet, context: context)
+            }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
@@ -149,18 +164,26 @@ extension TasksView {
     }
     
     private var deadlinesList: some View {
-        List(vm.deadlines) { deadline in
-            TaskListRowView(task: deadline)
-                .onTapGesture {
-                    withAnimation(.linear) {
-                        vm.markAsDone(deadline)
+        List {
+            ForEach(vm.deadlines) { deadline in
+                TaskListRowView(task: deadline)
+                    .onTapGesture {
+                        withAnimation(.linear) {
+                            vm.markAsDone(deadline)
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                            vm.tasks = tasks
+                        })
                     }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                        vm.tasks = tasks
-                    })
-                }
-                .listRowSeparator(.hidden)
+                    .listRowSeparator(.hidden)
+            }
+            .onMove { fromOffsets, toOffset in
+                vm.moveTask(in: &vm.deadlines, from: fromOffsets, to: toOffset)
+            }
+            .onDelete { indexSet in
+                vm.deleteTask(from: &vm.deadlines, at: indexSet, context: context)
+            }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
@@ -168,18 +191,26 @@ extension TasksView {
     }
     
     private var doneList: some View {
-        List(vm.done) { task in
-            TaskListRowView(task: task)
-                .onTapGesture {
-                    withAnimation(.linear) {
-                        vm.markAsUndone(task)
+        List {
+            ForEach(vm.done) { task in
+                TaskListRowView(task: task)
+                    .onTapGesture {
+                        withAnimation(.linear) {
+                            vm.markAsUndone(task)
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                            vm.tasks = tasks
+                        })
                     }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                        vm.tasks = tasks
-                    })
-                }
-                .listRowSeparator(.hidden)
+                    .listRowSeparator(.hidden)
+            }
+            .onMove { fromOffsets, toOffset in
+                vm.moveTask(in: &vm.done, from: fromOffsets, to: toOffset)
+            }
+            .onDelete { indexSet in
+                vm.deleteTask(from: &vm.done, at: indexSet, context: context)
+            }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)

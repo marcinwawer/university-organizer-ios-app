@@ -61,4 +61,17 @@ import SwiftData
             print("error saving task: \(error)")
         }
     }
+    
+    func deleteTask(from list: inout [Todo], at offsets: IndexSet, context: ModelContext) {
+        for index in offsets {
+            let task = list[index]
+            context.delete(task)
+            list.remove(at: index)
+        }
+        try? context.save()
+    }
+    
+    func moveTask(in list: inout [Todo], from offsets: IndexSet, to destination: Int) {
+        list.move(fromOffsets: offsets, toOffset: destination)
+    }
 }
