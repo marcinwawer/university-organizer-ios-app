@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -13,6 +14,9 @@ struct HomeView: View {
     
     @Environment(UserViewModel.self) private var userVM
     @Environment(PlanViewModel.self) private var planVM
+    
+    @Query(filter: #Predicate<Todo> { $0.dueDate == nil && !$0.isDone}) private var todos: [Todo]
+    @Query(filter: #Predicate<Todo> { $0.dueDate != nil && !$0.isDone}) private var deadlines: [Todo]
     
     @Binding var activeTab: TabModel
     @Binding var checkWelcomeView: Bool
@@ -38,26 +42,21 @@ struct HomeView: View {
             .padding(.top, safeAreaInsets.top)
             .background(GradientBackground())
             
-            newsView(text: "X tasks to complete") // TODO: vm
+            let todosNum = todos.count
+            newsView(text: todosNum == 0 ? "All tasks completed!" :
+                        (todosNum == 1 ? "1 task to complete" : "\(todosNum) tasks to complete"))
                 .padding(.leading)
                 .foregroundStyle(Color.theme.green)
-                .onTapGesture {
-                    activeTab = .tasks
-                }
             
-            newsView(text: "X deadlines this week") // TODO: vm
+            let deadlinesNum = deadlines.count
+            newsView(text: deadlinesNum == 0 ? "All deadlines completed!" :
+                        (deadlinesNum == 1 ? "1 deadline to complete" : "\(deadlinesNum) deadlines to complete"))
                 .padding(.leading)
                 .foregroundStyle(Color.theme.red)
-                .onTapGesture {
-                    activeTab = .tasks
-                }
             
             newsView(text: "X new marks last week") // TODO: vm
                 .padding(.leading)
                 .foregroundStyle(Color.theme.blue)
-                .onTapGesture {
-                    activeTab = .marks
-                }
             
             upcomingClassSection
             
