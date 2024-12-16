@@ -9,13 +9,17 @@ import SwiftUI
 import SwiftData
 
 struct NotesView: View {
+    @Environment(PlanViewModel.self) private var planVM
+    
 //    @Query private var notes: [Note]
 //    @Query private var subjects: [Subject]
     private var notes = DeveloperPreview.shared.notes
     private var subjects = DeveloperPreview.shared.subjects
+    
     @State private var vm: NotesViewModel
     
-    @Environment(PlanViewModel.self) private var planVM
+    @State private var selectedNote: Note? = nil
+    @State private var showDetailSheet = false
     
     init() {
         _vm = State(wrappedValue: NotesViewModel(notes: []))
@@ -31,9 +35,19 @@ struct NotesView: View {
             
             Spacer()
         }
-        .safeAreaPadding(.bottom, 50)
         .onAppear {
             vm.notes = notes
+        }
+        .sheet(isPresented: $showDetailSheet) {
+            vm.notes = notes
+        } content: {
+            if let selectedNote = selectedNote {
+                NavigationStack {
+                    DetailNoteView(note: selectedNote)
+                        .presentationDetents([.fraction(0.5), .large])
+                        .presentationDragIndicator(.visible)
+                }
+            }
         }
     }
 }
@@ -68,6 +82,10 @@ extension NotesView {
                             LazyHStack {
                                 ForEach(notesForSubject) { note in
                                     SingleNoteView(note: note)
+                                        .onTapGesture {
+                                            selectedNote = note
+                                            showDetailSheet = true
+                                        }
                                 }
                             }
                         }
@@ -78,6 +96,7 @@ extension NotesView {
             }
         }
         .scrollIndicators(.hidden)
+        .safeAreaPadding(.bottom, 100)
     }
 }
 

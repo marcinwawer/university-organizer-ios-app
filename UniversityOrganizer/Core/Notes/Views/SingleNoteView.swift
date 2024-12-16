@@ -27,9 +27,9 @@ struct SingleNoteView: View {
             
             Spacer()
         }
-        .frame(width: 180, height: 240)
+        .padding(.horizontal)
         .padding(.vertical, 8)
-        .padding(.horizontal, 4)
+        .frame(width: 180, height: 240, alignment: .leading)
         .background(note.subject.getColor()?.opacity(0.8) ?? Color.theme.background)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .customShadow()
@@ -37,5 +37,5 @@ struct SingleNoteView: View {
 }
 
 #Preview {
-    SingleNoteView(note: DeveloperPreview.shared.note)
+    SingleNoteView(note: DeveloperPreview.shared.note3)
 }

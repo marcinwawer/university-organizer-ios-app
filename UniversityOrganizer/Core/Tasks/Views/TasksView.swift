@@ -93,6 +93,7 @@ struct TasksView: View {
         .alert("You can't add any tasks, because there are no subjects.", isPresented: $showAlert) {
             Button("OK", role: .cancel) { }
         }
+        .safeAreaPadding(.bottom, 100)
     }
 }
 
