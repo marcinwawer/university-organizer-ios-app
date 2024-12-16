@@ -70,8 +70,4 @@ import SwiftData
         }
         try? context.save()
     }
-    
-    func moveTask(in list: inout [Todo], from offsets: IndexSet, to destination: Int) {
-        list.move(fromOffsets: offsets, toOffset: destination)
-    }
 }
