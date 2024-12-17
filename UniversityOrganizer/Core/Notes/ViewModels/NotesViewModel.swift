@@ -33,4 +33,14 @@ import SwiftData
     func getNotesForSubject(subject: Subject) -> [Note] {
         return notes.filter { $0.subject == subject }
     }
+    
+    func deleteNote(context: ModelContext, note: Note) {
+        context.delete(note)
+        
+        do {
+            try context.save()
+        } catch {
+            print("error deleting note: \(error)")
+        }
+    }
 }

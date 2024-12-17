@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DetailNoteView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var context
     
     let note: Note
+    @State var vm: NotesViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -25,6 +28,12 @@ struct DetailNoteView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             Spacer()
+            
+            HStack() {
+                Spacer()
+                deleteNoteButton
+                Spacer()
+            }
         }
         .padding(.horizontal)
         .navigationTitle(note.subject.name)
@@ -43,6 +52,22 @@ struct DetailNoteView: View {
 
 #Preview {
     NavigationStack {
-        DetailNoteView(note: DeveloperPreview.shared.note)
+        DetailNoteView(note: DeveloperPreview.shared.note, vm: DeveloperPreview.shared.notesVM)
+    }
+}
+
+extension DetailNoteView {
+    private var deleteNoteButton: some View {
+        Button {
+            vm.deleteNote(context: context, note: note)
+            dismiss()
+        } label: {
+            HStack {
+                Image(systemName: "minus.circle")
+                
+                Text("Delete Note")
+            }
+            .foregroundStyle(Color.theme.red)
+        }
     }
 }

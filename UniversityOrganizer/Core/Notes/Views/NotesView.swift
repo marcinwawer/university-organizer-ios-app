@@ -58,7 +58,7 @@ struct NotesView: View {
         } content: {
             if let selectedNote = selectedNote {
                 NavigationStack {
-                    DetailNoteView(note: selectedNote)
+                    DetailNoteView(note: selectedNote, vm: vm)
                         .presentationDetents([.fraction(0.5), .large])
                         .presentationDragIndicator(.visible)
                 }
