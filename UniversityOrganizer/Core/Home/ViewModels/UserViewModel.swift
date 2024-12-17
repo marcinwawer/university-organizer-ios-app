@@ -102,6 +102,8 @@ import SwiftData
         do {
             try context.delete(model: Subject.self)
             try context.delete(model: Todo.self)
+            try context.delete(model: Note.self)
+            try context.delete(model: Mark.self)
         } catch {
             print("failed to clear all subject data from swiftdata")
         }

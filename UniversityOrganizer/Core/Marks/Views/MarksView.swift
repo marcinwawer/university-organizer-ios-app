@@ -17,7 +17,12 @@ struct MarksView: View {
 //    @Query(sort: \Mark.date) private var marks: [Mark]
     private var marks = DeveloperPreview.shared.marks
     
+    @State private var vm: MarksViewModel
     @State private var isChartVisible: Bool = false
+    
+    init() {
+        _vm = State(wrappedValue: MarksViewModel(marks: []))
+    }
     
     var body: some View {
         NavigationStack {
@@ -25,7 +30,7 @@ struct MarksView: View {
                 VStack {
                     title
                     
-                    if !marks.isEmpty {
+                    if !vm.marks.isEmpty {
                         if isChartVisible {
                             chartSection
                                 .transition(.move(edge: .top).combined(with: .opacity))
@@ -41,6 +46,9 @@ struct MarksView: View {
                 
                 if !subjects.isEmpty {
                     subjectsListSection
+                        .navigationDestination(for: Subject.self) { subject in
+                            MarksDetailView(subject: subject, vm: vm)
+                        }
                 } else {
                     NoClassesView()
                 }
@@ -49,6 +57,8 @@ struct MarksView: View {
                 Spacer()
             }
             .onAppear {
+                vm.marks = marks
+                
                 withAnimation(.bouncy(duration: 0.8)) {
                     isChartVisible = true
                 }
@@ -80,7 +90,7 @@ extension MarksView {
     
     private var chartSection: some View {
         Chart {
-            ForEach(marks) { mark in
+            ForEach(vm.marks) { mark in
                 LineMark(
                     x: .value("Date", mark.date),
                     y: .value("Percentage", mark.percentage)
@@ -133,8 +143,5 @@ extension MarksView {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .navigationDestination(for: Subject.self) { subject in
-            Text(subject.name)
-        }
     }
 }

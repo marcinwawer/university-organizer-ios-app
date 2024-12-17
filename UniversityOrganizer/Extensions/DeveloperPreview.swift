@@ -23,7 +23,7 @@ class DeveloperPreview {
         
         mark = Mark(pointsGot: 5, pointsMax: 10, subject: subject, date: Date().addingTimeInterval(-86400))
         mark2 = Mark(pointsGot: 0, pointsMax: 10, subject: subject)
-        mark3 = Mark(pointsGot: 2, pointsMax: 10, subject: subject, date: Date().addingTimeInterval(-86400 * 50))
+        mark3 = Mark(pointsGot: 2.4, pointsMax: 10, subject: subject, date: Date().addingTimeInterval(-86400 * 50))
         mark4 = Mark(pointsGot: 10, pointsMax: 10, subject: subject, date: Date().addingTimeInterval(-86400 * 10))
         marks = [mark, mark2, mark3, mark4].sorted { $0.date < $1.date }
     }
@@ -32,6 +32,7 @@ class DeveloperPreview {
     let planVM = PlanViewModel()
     let tasksVM = TasksViewModel(tasks: [])
     let notesVM = NotesViewModel(notes: [])
+    let marksVM = MarksViewModel(marks: [])
     
     let subject = Subject(name: "Cybersecurity", type: SubjectType.lecture, room: "200", building: "D-1", color: Color.blue)
     let subject2 = Subject(name: "Test Test", type: SubjectType.lecture, room: "150", building: "D-6", color: Color.red)
