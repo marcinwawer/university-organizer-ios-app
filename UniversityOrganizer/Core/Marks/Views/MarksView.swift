@@ -25,17 +25,26 @@ struct MarksView: View {
                 VStack {
                     title
                     
-                    if isChartVisible {
-                        chartSection
-                            .transition(.move(edge: .top).combined(with: .opacity))
+                    if !marks.isEmpty {
+                        if isChartVisible {
+                            chartSection
+                                .transition(.move(edge: .top).combined(with: .opacity))
+                        } else {
+                            chartPlaceholder
+                        }
                     } else {
-                        chartPlaceholder
+                        EmptyMarksView()
                     }
                 }
                 .padding(.vertical)
                 .background(GradientBackground())
                 
-                subjectsListSection
+                if !subjects.isEmpty {
+                    subjectsListSection
+                } else {
+                    NoClassesView()
+                }
+                
                 
                 Spacer()
             }
