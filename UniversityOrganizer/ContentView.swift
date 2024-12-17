@@ -30,7 +30,7 @@ struct ContentView: View {
                         }
                         
                         Tab.init(value: .notes) {
-                            Text("Notes")
+                            NotesView()
                                 .toolbarVisibility(.hidden, for: .tabBar)
                         }
                         

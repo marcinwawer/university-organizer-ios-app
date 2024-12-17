@@ -12,6 +12,10 @@ import SwiftData
     var subjects: [Subject] = []
     var shownDay = 0
     
+    private var startOfDay = "00:00"
+    private var endOfDay = "23:59"
+    private var dateFormat = "HH:mm"
+    
     func uniqueSubjects(from subjects: [Subject]) -> [Subject] {
         var seenNames: Set<String> = []
         return subjects.filter { subject in
@@ -42,14 +46,16 @@ import SwiftData
             print("error fetching data: \(error)")
         }
         
+        #if DEBUG
         for subject in subjects {
             print(subject.name)
         }
+        #endif
     }
     
     private func sortSubjectsByEarliestStartTime(_ subjects: [Subject]) -> [Subject] {
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        formatter.dateFormat = dateFormat
         
         return subjects.sorted { subject1, subject2 in
             let earliestStartTime1 = subject1.schedules.compactMap { schedule in
@@ -74,7 +80,7 @@ import SwiftData
         if isAllDoneForToday(currentDay: today, currentTime: currentTime) {
             let nextDay = nextAvailableDay(after: today)
             shownDay = nextDay
-            currentTime = "00:00"
+            currentTime = startOfDay
             fetchSubjectsForDay(nextDay, context: context)
         }
         
@@ -86,7 +92,7 @@ import SwiftData
             return true
         }
         
-        let lastEndTime = lastSubject.schedules.compactMap { $0.endTime }.max() ?? "00:00"
+        let lastEndTime = lastSubject.schedules.compactMap { $0.endTime }.max() ?? startOfDay
         return currentTime > lastEndTime
     }
     
@@ -96,8 +102,8 @@ import SwiftData
     
     private func findClosestSubject(to currentTime: String, from subjects: [Subject]) -> Subject? {
         return subjects.min { subject1, subject2 in
-            let s1Time = findEarliestStartTime(for: subject1.schedules, currentTime: currentTime) ?? "23:59"
-            let s2Time = findEarliestStartTime(for: subject2.schedules, currentTime: currentTime) ?? "23:59"
+            let s1Time = findEarliestStartTime(for: subject1.schedules, currentTime: currentTime) ?? endOfDay
+            let s2Time = findEarliestStartTime(for: subject2.schedules, currentTime: currentTime) ?? endOfDay
             return s1Time < s2Time
         }
     }
@@ -122,7 +128,7 @@ import SwiftData
     
     private func getCurrentTimeString() -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
+        formatter.dateFormat = dateFormat
         return formatter.string(from: Date())
     }
 }

@@ -15,6 +15,7 @@ struct TasksView: View {
     @Query private var subjects: [Subject]
     
     @State private var vm: TasksViewModel
+    
     @State private var showAlert = false
     @State private var chosenType = 0
     @State private var showAddTaskView = false
@@ -81,7 +82,7 @@ struct TasksView: View {
         .onAppear {
             vm.tasks = tasks
         }
-        .safeAreaPadding(.bottom, 70)
+        .safeAreaPadding(.bottom, 50)
         .sheet(isPresented: $showAddTaskView, onDismiss: {
             vm.tasks = tasks
         }, content: {
@@ -92,6 +93,7 @@ struct TasksView: View {
         .alert("You can't add any tasks, because there are no subjects.", isPresented: $showAlert) {
             Button("OK", role: .cancel) { }
         }
+        .safeAreaPadding(.bottom, 100)
     }
 }
 
@@ -151,9 +153,6 @@ extension TasksView {
                     }
                     .listRowSeparator(.hidden)
             }
-            .onMove { fromOffsets, toOffset in
-                vm.moveTask(in: &vm.todos, from: fromOffsets, to: toOffset)
-            }
             .onDelete { indexSet in
                 vm.deleteTask(from: &vm.todos, at: indexSet, context: context)
             }
@@ -178,9 +177,6 @@ extension TasksView {
                     }
                     .listRowSeparator(.hidden)
             }
-            .onMove { fromOffsets, toOffset in
-                vm.moveTask(in: &vm.deadlines, from: fromOffsets, to: toOffset)
-            }
             .onDelete { indexSet in
                 vm.deleteTask(from: &vm.deadlines, at: indexSet, context: context)
             }
@@ -204,9 +200,6 @@ extension TasksView {
                         })
                     }
                     .listRowSeparator(.hidden)
-            }
-            .onMove { fromOffsets, toOffset in
-                vm.moveTask(in: &vm.done, from: fromOffsets, to: toOffset)
             }
             .onDelete { indexSet in
                 vm.deleteTask(from: &vm.done, at: indexSet, context: context)
