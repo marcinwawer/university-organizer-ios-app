@@ -35,7 +35,7 @@ struct ContentView: View {
                         }
                         
                         Tab.init(value: .marks) {
-                            Text("Marks")
+                            MarksView()
                                 .toolbarVisibility(.hidden, for: .tabBar)
                         }
                         
