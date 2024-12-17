@@ -6,25 +6,42 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MarksDetailView: View {
+    @Environment(\.modelContext) private var context
+    
     let subject: Subject
     var vm: MarksViewModel
     
     var body: some View {
         let subjectMarks = vm.getMarksForSubject(subject: subject)
         
-        VStack {
+        VStack() {
+            HStack {
+                if !subjectMarks.isEmpty { EditButton() }
+                Spacer()
+                // add button
+            }
+            .padding([.horizontal, .top])
+            
             if !subjectMarks.isEmpty {
-                List(subjectMarks) { mark in
-                    HStack {
-                        Text("\(formatPoints(mark.pointsGot))/\(formatPoints(mark.pointsMax)) - \(formatPoints(mark.percentage))%")
-                        Spacer()
-                        Text("\(formatDate(mark.date))")
+                List {
+                    ForEach(subjectMarks) { mark in
+                        HStack {
+                            Text("\(formatPoints(mark.pointsGot))/\(formatPoints(mark.pointsMax)) - \(formatPoints(mark.percentage))%")
+                            Spacer()
+                            Text("\(formatDate(mark.date))")
+                        }
+                    }
+                    .onDelete { indexSet in
+                        vm.deleteMark(at: indexSet, context: context)
                     }
                 }
             } else {
+                Spacer()
                 EmptyMarksView()
+                Spacer()
             }
         }
         .navigationTitle(subject.name)
@@ -44,8 +61,7 @@ extension MarksDetailView {
     
     func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .none
+        formatter.dateFormat = "d MMM yyyy"
         formatter.locale = Locale.current
         return formatter.string(from: date)
     }

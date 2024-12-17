@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 @Observable class MarksViewModel {
     var marks: [Mark] = []
@@ -16,5 +17,14 @@ import Foundation
     
     func getMarksForSubject(subject: Subject) -> [Mark] {
         return marks.filter { $0.subject == subject }
+    }
+    
+    func deleteMark(at offsets: IndexSet, context: ModelContext) {
+        for index in offsets {
+            let mark = marks[index]
+            context.delete(mark)
+            marks.remove(at: index)
+        }
+        try? context.save()
     }
 }
