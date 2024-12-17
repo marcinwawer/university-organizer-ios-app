@@ -38,15 +38,18 @@ struct NotesView: View {
             .padding(.horizontal)
             .padding(.vertical, 6)
             
-            if vm.notes.isEmpty {
-                VStack {
-                    EmptyNotesView()
+            ZStack {
+                if vm.notes.isEmpty {
+                    VStack {
+                        EmptyNotesView()
+                    }
+                    .padding(.top, 150)
+                    .transition(.opacity)
+                } else {
+                    classNotesSection
                 }
-                .padding(.top, 150)
-                .transition(.opacity)
-            } else {
-                classNotesSection
             }
+            .animation(.default, value: vm.notes)
             
             Spacer()
         }
@@ -111,11 +114,14 @@ extension NotesView {
                                             selectedNote = note
                                             showDetailSheet = true
                                         }
+                                        .transition(.opacity)
                                 }
+                                .animation(.easeInOut, value: vm.notes)
                             }
                         }
                         .padding(.horizontal)
                         .scrollClipDisabled()
+                        .scrollIndicators(.visible)
                     }
                 }
             }
