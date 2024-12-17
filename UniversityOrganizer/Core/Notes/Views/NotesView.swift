@@ -11,15 +11,15 @@ import SwiftData
 struct NotesView: View {
     @Environment(PlanViewModel.self) private var planVM
     
-//    @Query private var notes: [Note]
-//    @Query private var subjects: [Subject]
-    private var notes = DeveloperPreview.shared.notes
-    private var subjects = DeveloperPreview.shared.subjects
+    @Query private var notes: [Note]
+    @Query private var subjects: [Subject]
     
     @State private var vm: NotesViewModel
     
     @State private var selectedNote: Note? = nil
     @State private var showDetailSheet = false
+    @State private var showAddNoteView = false
+    @State private var showAlert = false
     
     init() {
         _vm = State(wrappedValue: NotesViewModel(notes: []))
@@ -30,6 +30,13 @@ struct NotesView: View {
             title
                 .padding(.vertical)
                 .background(GradientBackground())
+            
+            HStack {
+                Spacer()
+                addNoteButton
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 6)
             
             classNotesSection
             
@@ -48,6 +55,16 @@ struct NotesView: View {
                         .presentationDragIndicator(.visible)
                 }
             }
+        }
+        .sheet(isPresented: $showAddNoteView, onDismiss: {
+            vm.notes = notes
+        }, content: {
+            NavigationStack {
+                AddNoteView(vm: vm)
+            }
+        })
+        .alert("You can't add any notes, because there are no subjects.", isPresented: $showAlert) {
+            Button("OK", role: .cancel) { }
         }
     }
 }
@@ -97,6 +114,18 @@ extension NotesView {
         }
         .scrollIndicators(.hidden)
         .safeAreaPadding(.bottom, 100)
+    }
+    
+    private var addNoteButton: some View {
+        Button {
+            subjects.isEmpty ? (showAlert = true) : (showAddNoteView = true)
+        } label: {
+            HStack {
+                Image(systemName: "plus.circle")
+                
+                Text("New Note")
+            }
+        }
     }
 }
 

@@ -25,6 +25,7 @@ class DeveloperPreview {
     let userVM = UserViewModel()
     let planVM = PlanViewModel()
     let tasksVM = TasksViewModel(tasks: [])
+    let notesVM = NotesViewModel(notes: [])
     
     let subject = Subject(name: "Cybersecurity", type: SubjectType.lecture, room: "200", building: "D-1", color: Color.blue)
     let subject2 = Subject(name: "Test Test", type: SubjectType.lecture, room: "150", building: "D-6", color: Color.red)
