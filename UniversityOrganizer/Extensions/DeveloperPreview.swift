@@ -20,6 +20,12 @@ class DeveloperPreview {
         note2 = Note(title: "Test", content: "anfgbags aasfasfg afgjkashigas gdjsajbvdbhs  dh bgvdfbnvcdkfb cfvxfvbsdgoadsgndsbg ds", subject: subject)
         note3 = Note(title: "Witam", content: "asfasfas fasf jaj fgcdfvbmn fm", subject: subject2)
         notes = [note, note2, note3]
+        
+        mark = Mark(pointsGot: 5, pointsMax: 10, subject: subject, date: Date().addingTimeInterval(-86400))
+        mark2 = Mark(pointsGot: 0, pointsMax: 10, subject: subject)
+        mark3 = Mark(pointsGot: 2, pointsMax: 10, subject: subject, date: Date().addingTimeInterval(-86400 * 50))
+        mark4 = Mark(pointsGot: 10, pointsMax: 10, subject: subject, date: Date().addingTimeInterval(-86400 * 10))
+        marks = [mark, mark2, mark3, mark4].sorted { $0.date < $1.date }
     }
     
     let userVM = UserViewModel()
@@ -39,4 +45,10 @@ class DeveloperPreview {
     let note2: Note
     let note3: Note
     let notes: [Note]
+    
+    let mark: Mark
+    let mark2: Mark
+    let mark3: Mark
+    let mark4: Mark
+    let marks: [Mark]
 }
