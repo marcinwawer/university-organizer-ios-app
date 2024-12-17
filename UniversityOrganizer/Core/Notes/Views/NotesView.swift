@@ -38,7 +38,15 @@ struct NotesView: View {
             .padding(.horizontal)
             .padding(.vertical, 6)
             
-            classNotesSection
+            if vm.notes.isEmpty {
+                VStack {
+                    EmptyNotesView()
+                }
+                .padding(.top, 150)
+                .transition(.opacity)
+            } else {
+                classNotesSection
+            }
             
             Spacer()
         }
