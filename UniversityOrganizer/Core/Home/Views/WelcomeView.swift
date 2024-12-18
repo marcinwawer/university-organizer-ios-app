@@ -24,50 +24,39 @@ struct WelcomeView: View {
     @State private var showProfilePictures = false
     @State private var importing = false
     
+    @State private var isInteractionDisabled = false
+    @State private var showPositivePhotoToast = false
+    @State private var showNegativePhotoToast = false
+    @State private var showPositiveFileImportToast = false
+    @State private var showNegativeFileImportToast = false
+    @State private var showSaveToast = false
+    
     var body: some View {
         ZStack {
             LinearGradient.customGradient.ignoresSafeArea()
             
             VStack {
                 ScrollView {
-                    nameTextField
-                        .padding(.top)
-                    
+                    nameTextField.padding(.top)
                     surnameTextField
-                    
                     indexTextField
-                    
                     universityTextField
-                    
-                    degreeTextField
-                        .padding(.bottom)
-                    
+                    degreeTextField.padding(.bottom)
                     academicYearOption
-                    
-                    ProfilePicturePickerView()
+                    ProfilePicturePickerView(showPositiveToast: $showPositivePhotoToast, showNegativeToast: $showNegativePhotoToast)
                 }
                 .navigationTitle("Set your info! 🤩")
                 .toolbarBackground(LinearGradient.customGradient)
                 
                 Spacer()
                 
-                uploadPlanButton
-                    .padding(.bottom, 4)
-                
+                uploadPlanButton.padding(.bottom, 4)
                 saveButton
             }
         }
-        .onTapGesture {
-            UIApplication.shared.endEditing()
-        }
-        .onAppear {
-            name = vm.name
-            surname = vm.surname
-            index = vm.index
-            university = vm.university
-            degree = vm.degree
-            academicYear = vm.academicYear
-        }
+        .overlay { toasts }
+        .onTapGesture { UIApplication.shared.endEditing() }
+        .onAppear { onAppearEvents() }
         .fileImporter(
             isPresented: $importing,
             allowedContentTypes: {
@@ -80,9 +69,11 @@ struct WelcomeView: View {
         ) { result in
             switch result {
             case .success(let fileURL):
-                vm.handleSecurityScopedFile(fileURL: fileURL, context: context)
+                if vm.handleSecurityScopedFile(fileURL: fileURL, context: context) { positiveFileImportToast() }
+                else { negativeFileImportToast() }
             case .failure(let error):
                 print("error choosing file: \(error.localizedDescription)")
+                negativeFileImportToast()
             }
         }
         .sheet(isPresented: $showProfilePictures) {
@@ -98,6 +89,7 @@ struct WelcomeView: View {
     }
 }
 
+// MARK: COMPONENTS
 extension WelcomeView {
     private var nameTextField: some View {
         TextField(name.isEmpty ? "Enter your name..." : name, text: $name)
@@ -232,6 +224,8 @@ extension WelcomeView {
     
     private var saveButton: some View {
         Button {
+            isInteractionDisabled = true
+            
             vm.updateUser(
                 name: name,
                 surname: surname,
@@ -241,8 +235,19 @@ extension WelcomeView {
                 academicYear: academicYear
             )
             
-            showWelcomeView = false
-            checkWelcomeView = false
+            withAnimation(.easeInOut) {
+                showSaveToast = true
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                withAnimation(.easeOut) {
+                    showSaveToast = false
+                }
+                
+                isInteractionDisabled = true
+                showWelcomeView = false
+                checkWelcomeView = false
+            }
         } label: {
             Text("Save")
                 .foregroundStyle(.white)
@@ -254,5 +259,65 @@ extension WelcomeView {
                 .shadow(color: Color.theme.blue.opacity(0.5), radius: 10)
         }
         .padding(.horizontal)
+    }
+    
+    private var toasts: some View {
+        Group {
+            if showPositivePhotoToast {
+                Toast(info: "Successfully changed profile picture!", isPositive: true)
+            }
+            
+            if showNegativePhotoToast {
+                Toast(info: "Error during changing profile picture.", isPositive: false)
+            }
+            
+            if showPositiveFileImportToast {
+                Toast(info: "Successfully imported plan file!", isPositive: true)
+            }
+            
+            if showNegativeFileImportToast {
+                Toast(info: "Error during importing plan file.", isPositive: false)
+            }
+            
+            if showSaveToast {
+                Toast(info: "Successfully saved changes!", isPositive: true)
+            }
+        }
+    }
+}
+
+// MARK: FUNCTIONS
+extension WelcomeView {
+    private func onAppearEvents() {
+        name = vm.name
+        surname = vm.surname
+        index = vm.index
+        university = vm.university
+        degree = vm.degree
+        academicYear = vm.academicYear
+    }
+    
+    private func positiveFileImportToast() {
+        withAnimation(.easeIn) {
+            showPositiveFileImportToast = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation(.easeOut) {
+                showPositiveFileImportToast = false
+            }
+        }
+    }
+    
+    private func negativeFileImportToast() {
+        withAnimation(.easeIn) {
+            showNegativeFileImportToast = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation(.easeOut) {
+                showNegativeFileImportToast = false
+            }
+        }
     }
 }

@@ -54,18 +54,20 @@ import SwiftData
         profileImage = fileManager.getImage(imageName: imageName, folderName: folderName)
     }
     
-    func saveProfilePicture(from data: Data) {
+    func saveProfilePicture(from data: Data) -> Bool {
         guard let image = UIImage(data: data) else {
             print("Failed to create image from data.")
-            return
+            return false
         }
         
-        Task {
-            fileManager.saveImage(image: image, imageName: imageName, folderName: folderName)
+        if fileManager.saveImage(image: image, imageName: imageName, folderName: folderName) {
             DispatchQueue.main.async {
                 self.profileImage = image
             }
+            return true
         }
+        
+        return false
     }
     
     func updateUser(name: String, surname: String, index: String, university: String, degree: String, academicYear: AcademicYear) {
@@ -86,15 +88,16 @@ import SwiftData
         academicYear = .first
         fileManager.deleteImage(imageName: imageName, folderName: folderName)
         loadProfilePicture()
-        
     }
     
-    func handleSecurityScopedFile(fileURL: URL, context: ModelContext) {
+    func handleSecurityScopedFile(fileURL: URL, context: ModelContext) -> Bool {
         if fileURL.startAccessingSecurityScopedResource() {
             defer { fileURL.stopAccessingSecurityScopedResource() }
             parseICSFile(fileURL, context: context)
+            return true
         } else {
             print("Nie można uzyskać dostępu do pliku.")
+            return false
         }
     }
     

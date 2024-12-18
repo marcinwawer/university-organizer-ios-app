@@ -12,6 +12,8 @@ struct ProfilePicturePickerView: View {
     @Environment(UserViewModel.self) private var userVM
     
     @State private var photosPickerItem: PhotosPickerItem?
+    @Binding var showPositiveToast: Bool
+    @Binding var showNegativeToast: Bool
     
     var body: some View {
         VStack {
@@ -33,7 +35,9 @@ struct ProfilePicturePickerView: View {
             Task {
                 if let photosPickerItem,
                    let data = try? await photosPickerItem.loadTransferable(type: Data.self) {
-                    userVM.saveProfilePicture(from: data)
+                    
+                    if userVM.saveProfilePicture(from: data) { positivePhotoPickerToast() }
+                    else { negativePhotoPickerToast() }
                 }
                 
                 photosPickerItem = nil
@@ -43,6 +47,33 @@ struct ProfilePicturePickerView: View {
 }
 
 #Preview {
-    ProfilePicturePickerView()
+    ProfilePicturePickerView(showPositiveToast: .constant(false), showNegativeToast: .constant(false))
         .environment(DeveloperPreview.shared.userVM)
+}
+
+// MARK: FUNCTIONS
+extension ProfilePicturePickerView {
+    private func positivePhotoPickerToast() {
+        withAnimation(.easeIn) {
+            showPositiveToast = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation(.easeOut) {
+                showPositiveToast = false
+            }
+        }
+    }
+    
+    private func negativePhotoPickerToast() {
+        withAnimation(.easeIn) {
+            showNegativeToast = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation(.easeOut) {
+                showNegativeToast = false
+            }
+        }
+    }
 }
