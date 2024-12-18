@@ -38,7 +38,7 @@ struct AddMarkView: View {
                 HStack {
                     Text("Percentage:")
                     Spacer()
-                    Text(pointsMax != 0 ? "\(vm.formatPoints(pointsGot / pointsMax * 100))%" : "0%")
+                    Text(pointsMax != 0 ? "\(vm.formatPoints(min(pointsGot / pointsMax * 100, 100)))%" : "0%")
                 }
                 .padding()
                 
