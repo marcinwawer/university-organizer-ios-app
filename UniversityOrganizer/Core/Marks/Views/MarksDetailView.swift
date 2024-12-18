@@ -11,33 +11,26 @@ import SwiftData
 struct MarksDetailView: View {
     @Environment(\.modelContext) private var context
     
+    @Query(sort: \Mark.date) private var marks: [Mark]
+    
+    @State var vm: MarksViewModel
+    @State private var showAddMarkSheet = false
+    @State private var subjectMarks: [Mark] = []
+    
     let subject: Subject
-    var vm: MarksViewModel
     
     var body: some View {
-        let subjectMarks = vm.getMarksForSubject(subject: subject)
-        
         VStack() {
             HStack {
                 if !subjectMarks.isEmpty { EditButton() }
                 Spacer()
-                // add button
+                addMarkButton
             }
             .padding([.horizontal, .top])
+            .padding(.bottom, 4)
             
             if !subjectMarks.isEmpty {
-                List {
-                    ForEach(subjectMarks) { mark in
-                        HStack {
-                            Text("\(formatPoints(mark.pointsGot))/\(formatPoints(mark.pointsMax)) - \(formatPoints(mark.percentage))%")
-                            Spacer()
-                            Text("\(formatDate(mark.date))")
-                        }
-                    }
-                    .onDelete { indexSet in
-                        vm.deleteMark(at: indexSet, context: context)
-                    }
-                }
+                subjectMarksList
             } else {
                 Spacer()
                 EmptyMarksView()
@@ -45,24 +38,60 @@ struct MarksDetailView: View {
             }
         }
         .navigationTitle(subject.name)
+        .onAppear { updateSubjectMarks() }
+        .sheet(isPresented: $showAddMarkSheet, onDismiss: {
+            vm.marks = marks
+            updateSubjectMarks()
+        }, content: {
+            NavigationStack {
+                AddMarkView(subject: subject, vm: vm)
+            }
+        })
+        .safeAreaPadding(.bottom, 50)
     }
 }
 
 #Preview {
     NavigationStack {
-        MarksDetailView(subject: DeveloperPreview.shared.subject, vm: DeveloperPreview.shared.marksVM)
+        MarksDetailView(vm: DeveloperPreview.shared.marksVM, subject: DeveloperPreview.shared.subject)
     }
 }
 
+// MARK: COMPONENTS
 extension MarksDetailView {
-    func formatPoints(_ points: Double) -> String {
-        return String(points).replacingOccurrences(of: "\\.?0+$", with: "", options: .regularExpression)
+    private var subjectMarksList: some View {
+        List {
+            ForEach(subjectMarks) { mark in
+                HStack {
+                    Text("\(vm.formatPoints(mark.pointsGot))/\(vm.formatPoints(mark.pointsMax)) - \(vm.formatPoints(mark.percentage))%")
+                    Spacer()
+                    Text("\(vm.formatDate(mark.date))")
+                }
+            }
+            .onDelete { indexSet in
+                vm.deleteMark(at: indexSet, context: context)
+                vm.marks = marks
+                updateSubjectMarks()
+            }
+        }
     }
     
-    func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "d MMM yyyy"
-        formatter.locale = Locale.current
-        return formatter.string(from: date)
+    private var addMarkButton: some View {
+        Button {
+            showAddMarkSheet = true
+        } label: {
+            HStack {
+                Image(systemName: "plus.circle")
+                
+                Text("New Mark")
+            }
+        }
+    }
+}
+
+// MARK: FUNCTIONS
+extension MarksDetailView {
+    private func updateSubjectMarks() {
+        subjectMarks = vm.getMarksForSubject(subject: subject)
     }
 }

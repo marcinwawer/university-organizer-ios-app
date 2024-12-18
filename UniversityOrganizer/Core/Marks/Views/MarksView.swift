@@ -12,10 +12,8 @@ import Charts
 struct MarksView: View {
     @Environment(PlanViewModel.self) private var planVM
     
-//    @Query(sort: \Subject.name) private var subjects: [Subject]
-    private var subjects = DeveloperPreview.shared.subjects
-//    @Query(sort: \Mark.date) private var marks: [Mark]
-    private var marks = DeveloperPreview.shared.marks
+    @Query(sort: \Subject.name) private var subjects: [Subject]
+    @Query(sort: \Mark.date) private var marks: [Mark]
     
     @State private var vm: MarksViewModel
     @State private var isChartVisible: Bool = false
@@ -47,7 +45,7 @@ struct MarksView: View {
                 if !subjects.isEmpty {
                     subjectsListSection
                         .navigationDestination(for: Subject.self) { subject in
-                            MarksDetailView(subject: subject, vm: vm)
+                            MarksDetailView(vm: vm, subject: subject)
                         }
                 } else {
                     NoClassesView()
@@ -56,6 +54,7 @@ struct MarksView: View {
                 
                 Spacer()
             }
+            .ignoresSafeArea(edges: .bottom)
             .onAppear {
                 vm.marks = marks
                 
@@ -92,12 +91,12 @@ extension MarksView {
         Chart {
             ForEach(vm.marks) { mark in
                 LineMark(
-                    x: .value("Date", mark.date),
+                    x: .value("Date", mark.date.strippedTime()),
                     y: .value("Percentage", mark.percentage)
                 )
                 
                 PointMark(
-                    x: .value("Date", mark.date),
+                    x: .value("Date", mark.date.strippedTime()),
                     y: .value("Percentage", mark.percentage)
                 )
                 .symbolSize(40)
@@ -133,13 +132,19 @@ extension MarksView {
     }
     
     private var subjectsListSection: some View {
-        List(planVM.uniqueSubjects(from: subjects)) { subject in
-            ZStack {
-                NavigationLink(value: subject) {}.opacity(0)
-                
-                SubjectListRowView(subject: subject)
+        List {
+            ForEach(planVM.uniqueSubjects(from: subjects)) { subject in
+                ZStack {
+                    NavigationLink(value: subject) {}.opacity(0)
+                    
+                    SubjectListRowView(subject: subject)
+                }
+                .listRowSeparator(.hidden)
             }
-            .listRowSeparator(.hidden)
+            
+            Spacer()
+                .frame(height: 65)
+                .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)

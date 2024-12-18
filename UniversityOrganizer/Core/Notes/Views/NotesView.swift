@@ -29,6 +29,7 @@ struct NotesView: View {
         VStack() {
             title
                 .padding(.vertical)
+                .padding(.bottom, 8)
                 .background(GradientBackground())
             
             HStack {

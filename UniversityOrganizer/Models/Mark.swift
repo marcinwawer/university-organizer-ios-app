@@ -20,7 +20,6 @@ class Mark {
         let percent = (pointsGot / pointsMax) * 100
         return Double(round(100 * percent) / 100)
     }
-//    var date: Date = Date()
     var date: Date
     
     init(pointsGot: Double, pointsMax: Double, subject: Subject, date: Date = Date()) {
