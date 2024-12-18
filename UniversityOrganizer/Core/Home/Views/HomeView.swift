@@ -17,6 +17,7 @@ struct HomeView: View {
     
     @Query(filter: #Predicate<Todo> { $0.dueDate == nil && !$0.isDone}) private var todos: [Todo]
     @Query(filter: #Predicate<Todo> { $0.dueDate != nil && !$0.isDone}) private var deadlines: [Todo]
+    @Query(sort: \Mark.date) private var marks: [Mark]
     
     @Binding var activeTab: TabModel
     @Binding var checkWelcomeView: Bool
@@ -54,7 +55,9 @@ struct HomeView: View {
                 .padding(.leading)
                 .foregroundStyle(Color.theme.red)
             
-            newsView(text: "X new marks last week") // TODO: vm
+            let marksCount = MarksViewModel.marksFromLastWeek(marks: marks)
+            newsView(text: marksCount == 0 ? "No new marks last week!" :
+                        marksCount == 1 ? "1 new mark last week" : "\(marksCount) new marks last week")
                 .padding(.leading)
                 .foregroundStyle(Color.theme.blue)
             

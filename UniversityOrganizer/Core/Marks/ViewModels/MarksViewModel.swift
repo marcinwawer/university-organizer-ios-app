@@ -73,4 +73,19 @@ import SwiftData
             return 0
         }
     }
+    
+    static func marksFromLastWeek(marks: [Mark]) -> Int {
+        let calendar = Calendar.current
+        let now = Date()
+        
+        guard let oneWeekAgo = calendar.date(byAdding: .day, value: -7, to: now) else {
+            return 0
+        }
+        
+        let recentMarks = marks.filter { mark in
+            mark.date >= oneWeekAgo && mark.date <= now
+        }
+        
+        return recentMarks.count
+    }
 }
