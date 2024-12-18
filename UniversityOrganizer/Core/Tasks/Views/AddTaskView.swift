@@ -11,7 +11,6 @@ import SwiftData
 struct AddTaskView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
-    @Environment(PlanViewModel.self) private var planVM
     
     @Query private var subjects: [Subject]
     
@@ -65,7 +64,6 @@ struct AddTaskView: View {
 #Preview {
     NavigationStack {
         AddTaskView(vm: DeveloperPreview.shared.tasksVM)
-            .environment(DeveloperPreview.shared.planVM)
     }
 }
 
@@ -96,7 +94,7 @@ extension AddTaskView {
             Spacer()
             
             Picker("Subject", selection: $chosenSubjectID) {
-                ForEach(planVM.uniqueSubjects(from: subjects)) { subject in
+                ForEach(PlanViewModel.uniqueSubjects(from: subjects)) { subject in
                     Text(subject.name).tag(subject.id)
                 }
             }
@@ -142,9 +140,9 @@ extension AddTaskView {
             }
             
             if chosenType == 1 {
-                vm.addTask(context: context, title: title, subject: planVM.getSubjectFromId(from: subjects, id: chosenSubjectID), dueDate: deadline)
+                vm.addTask(context: context, title: title, subject: PlanViewModel.getSubjectFromId(from: subjects, id: chosenSubjectID), dueDate: deadline)
             } else {
-                vm.addTask(context: context, title: title, subject: planVM.getSubjectFromId(from: subjects, id: chosenSubjectID))
+                vm.addTask(context: context, title: title, subject: PlanViewModel.getSubjectFromId(from: subjects, id: chosenSubjectID))
             }
             
             dismiss()

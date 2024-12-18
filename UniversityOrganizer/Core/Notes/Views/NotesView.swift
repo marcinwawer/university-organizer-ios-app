@@ -9,8 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct NotesView: View {
-    @Environment(PlanViewModel.self) private var planVM
-    
     @Query private var notes: [Note]
     @Query private var subjects: [Subject]
     
@@ -82,6 +80,10 @@ struct NotesView: View {
     }
 }
 
+#Preview {
+    NotesView()
+}
+
 extension NotesView {
     private var title: some View {
         HStack {
@@ -100,7 +102,7 @@ extension NotesView {
     private var classNotesSection: some View {
         ScrollView() {
             VStack(alignment: .leading) {
-                ForEach(planVM.uniqueSubjects(from: subjects)) { subject in
+                ForEach(PlanViewModel.uniqueSubjects(from: subjects)) { subject in
                     let notesForSubject = vm.getNotesForSubject(subject: subject)
                     
                     if !notesForSubject.isEmpty {
@@ -145,9 +147,4 @@ extension NotesView {
             }
         }
     }
-}
-
-#Preview {
-    NotesView()
-        .environment(DeveloperPreview.shared.planVM)
 }

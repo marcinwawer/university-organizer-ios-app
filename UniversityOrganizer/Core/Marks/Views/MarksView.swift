@@ -10,8 +10,6 @@ import SwiftData
 import Charts
 
 struct MarksView: View {
-    @Environment(PlanViewModel.self) private var planVM
-    
     @Query(sort: \Subject.name) private var subjects: [Subject]
     @Query(sort: \Mark.date) private var marks: [Mark]
     
@@ -69,7 +67,6 @@ struct MarksView: View {
 
 #Preview {
     MarksView()
-        .environment(DeveloperPreview.shared.planVM)
 }
 
 extension MarksView {
@@ -133,7 +130,7 @@ extension MarksView {
     
     private var subjectsListSection: some View {
         List {
-            ForEach(planVM.uniqueSubjects(from: subjects)) { subject in
+            ForEach(PlanViewModel.uniqueSubjects(from: subjects)) { subject in
                 ZStack {
                     NavigationLink(value: subject) {}.opacity(0)
                     

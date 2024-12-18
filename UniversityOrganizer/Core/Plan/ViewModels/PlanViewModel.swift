@@ -16,7 +16,7 @@ import SwiftData
     private var endOfDay = "23:59"
     private var dateFormat = "HH:mm"
     
-    func uniqueSubjects(from subjects: [Subject]) -> [Subject] {
+    static func uniqueSubjects(from subjects: [Subject]) -> [Subject] {
         var seenNames: Set<String> = []
         
         let sortedSubjects = subjects.sorted {
@@ -36,7 +36,7 @@ import SwiftData
         }
     }
     
-    func getSubjectFromId(from subjects: [Subject], id: UUID) -> Subject? {
+    static func getSubjectFromId(from subjects: [Subject], id: UUID) -> Subject? {
         return subjects.first(where: { $0.id == id })
     }
     

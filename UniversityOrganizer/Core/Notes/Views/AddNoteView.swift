@@ -11,7 +11,6 @@ import SwiftData
 struct AddNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
-    @Environment(PlanViewModel.self) private var planVM
     
     @Query private var subjects: [Subject]
     
@@ -63,7 +62,6 @@ struct AddNoteView: View {
 #Preview {
     NavigationStack {
         AddNoteView(vm: DeveloperPreview.shared.notesVM)
-            .environment(DeveloperPreview.shared.planVM)
     }
 }
 
@@ -75,7 +73,7 @@ extension AddNoteView {
             Spacer()
             
             Picker("Subject", selection: $chosenSubjectID) {
-                ForEach(planVM.uniqueSubjects(from: subjects)) { subject in
+                ForEach(PlanViewModel.uniqueSubjects(from: subjects)) { subject in
                     Text(subject.name).tag(subject.id)
                 }
             }
@@ -145,7 +143,7 @@ extension AddNoteView {
                 return
             }
             
-            vm.addNote(context: context, title: title, subject: planVM.getSubjectFromId(from: subjects, id: chosenSubjectID), content: content)
+            vm.addNote(context: context, title: title, subject: PlanViewModel.getSubjectFromId(from: subjects, id: chosenSubjectID), content: content)
             
             dismiss()
         } label: {
