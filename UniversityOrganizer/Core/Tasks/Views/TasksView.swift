@@ -79,10 +79,10 @@ struct TasksView: View {
           
             Spacer()
         }
+        .ignoresSafeArea(edges: .bottom)
         .onAppear {
             vm.tasks = tasks
         }
-        .safeAreaPadding(.bottom, 50)
         .sheet(isPresented: $showAddTaskView, onDismiss: {
             vm.tasks = tasks
         }, content: {
@@ -93,7 +93,6 @@ struct TasksView: View {
         .alert("You can't add any tasks, because there are no subjects.", isPresented: $showAlert) {
             Button("OK", role: .cancel) { }
         }
-        .safeAreaPadding(.bottom, 100)
     }
 }
 
@@ -156,10 +155,15 @@ extension TasksView {
             .onDelete { indexSet in
                 vm.deleteTask(from: &vm.todos, at: indexSet, context: context)
             }
+            
+            Spacer()
+                .frame(height: 65)
+                .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .animation(.easeOut, value: vm.todos)
+        .scrollIndicators(.hidden)
     }
     
     private var deadlinesList: some View {
@@ -180,10 +184,15 @@ extension TasksView {
             .onDelete { indexSet in
                 vm.deleteTask(from: &vm.deadlines, at: indexSet, context: context)
             }
+            
+            Spacer()
+                .frame(height: 65)
+                .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .animation(.easeOut, value: vm.todos)
+        .scrollIndicators(.visible)
     }
     
     private var doneList: some View {
@@ -204,9 +213,14 @@ extension TasksView {
             .onDelete { indexSet in
                 vm.deleteTask(from: &vm.done, at: indexSet, context: context)
             }
+            
+            Spacer()
+                .frame(height: 65)
+                .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
         .animation(.easeOut, value: vm.todos)
+        .scrollIndicators(.visible)
     }
 }

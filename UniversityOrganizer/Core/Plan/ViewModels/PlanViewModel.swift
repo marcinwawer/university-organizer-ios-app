@@ -18,7 +18,15 @@ import SwiftData
     
     func uniqueSubjects(from subjects: [Subject]) -> [Subject] {
         var seenNames: Set<String> = []
-        return subjects.filter { subject in
+        
+        let sortedSubjects = subjects.sorted {
+            if $0.name == $1.name {
+                return $0.type < $1.type
+            }
+            return $0.name < $1.name
+        }
+        
+        return sortedSubjects.filter { subject in
             if seenNames.contains(subject.name) {
                 return false
             } else {

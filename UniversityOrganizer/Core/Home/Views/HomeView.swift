@@ -17,6 +17,7 @@ struct HomeView: View {
     
     @Query(filter: #Predicate<Todo> { $0.dueDate == nil && !$0.isDone}) private var todos: [Todo]
     @Query(filter: #Predicate<Todo> { $0.dueDate != nil && !$0.isDone}) private var deadlines: [Todo]
+    @Query(sort: \Mark.date) private var marks: [Mark]
     
     @Binding var activeTab: TabModel
     @Binding var checkWelcomeView: Bool
@@ -54,13 +55,15 @@ struct HomeView: View {
                 .padding(.leading)
                 .foregroundStyle(Color.theme.red)
             
-            newsView(text: "X new marks last week") // TODO: vm
+            let marksCount = MarksViewModel.marksFromLastWeek(marks: marks)
+            newsView(text: marksCount == 0 ? "No new marks last week!" :
+                        marksCount == 1 ? "1 new mark last week" : "\(marksCount) new marks last week")
                 .padding(.leading)
                 .foregroundStyle(Color.theme.blue)
             
             upcomingClassSection
             
-            gpaSection
+            averageMarkSection
             
             Spacer()
         }
@@ -152,7 +155,7 @@ extension HomeView {
         }
     }
     
-    private var gpaSection : some View {
+    private var averageMarkSection : some View {
         VStack {
             HStack {
                 Image(systemName: "chart.pie")
@@ -168,15 +171,16 @@ extension HomeView {
                     .customShadow()
                 
                 VStack() {
-                    Text("Current GPA")
+                    Text("Average Percentage Score")
                         .foregroundStyle(.secondary)
                         .padding(.top)
                     
                     Spacer()
                     
+                    let average = MarksViewModel.averageMarks(marks: marks)
                     HStack {
                         Image(systemName: "graduationcap.circle")
-                        Text("4.20")
+                        Text("\(String(format: "%.2f", average))%")
                     }
                     
                     Spacer()

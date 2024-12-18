@@ -37,6 +37,9 @@ struct PlanView: View {
                         SubjectView(subject: subject, lineLimit: 2, defaultColor: false)
                             .padding(.horizontal, 20)
                     }
+                    
+                    Spacer()
+                        .frame(height: 100)
                 }
             }
             .opacity(opacityAnimation)
@@ -49,7 +52,7 @@ struct PlanView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .safeAreaPadding(.bottom, 100)
+        .ignoresSafeArea(edges: .bottom)
     }
 }
 

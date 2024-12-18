@@ -29,6 +29,7 @@ struct NotesView: View {
         VStack() {
             title
                 .padding(.vertical)
+                .padding(.bottom, 8)
                 .background(GradientBackground())
             
             HStack {
@@ -53,6 +54,7 @@ struct NotesView: View {
             
             Spacer()
         }
+        .ignoresSafeArea(edges: .bottom)
         .onAppear {
             vm.notes = notes
         }
@@ -124,10 +126,12 @@ extension NotesView {
                         .scrollIndicators(.visible)
                     }
                 }
+                
+                Spacer()
+                    .frame(height: 100)
             }
         }
         .scrollIndicators(.hidden)
-        .safeAreaPadding(.bottom, 100)
     }
     
     private var addNoteButton: some View {
