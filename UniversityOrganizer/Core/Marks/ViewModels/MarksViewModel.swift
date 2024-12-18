@@ -88,4 +88,10 @@ import SwiftData
         
         return recentMarks.count
     }
+    
+    static func averageMarks(marks: [Mark]) -> Double {
+        guard !marks.isEmpty else { return 0.0 }
+        let totalPercentage = marks.reduce(0.0) { $0 + $1.percentage }
+        return totalPercentage / Double(marks.count)
+    }
 }

@@ -63,7 +63,7 @@ struct HomeView: View {
             
             upcomingClassSection
             
-            gpaSection
+            averageMarkSection
             
             Spacer()
         }
@@ -155,7 +155,7 @@ extension HomeView {
         }
     }
     
-    private var gpaSection : some View {
+    private var averageMarkSection : some View {
         VStack {
             HStack {
                 Image(systemName: "chart.pie")
@@ -171,15 +171,16 @@ extension HomeView {
                     .customShadow()
                 
                 VStack() {
-                    Text("Current GPA")
+                    Text("Average Percentage Score")
                         .foregroundStyle(.secondary)
                         .padding(.top)
                     
                     Spacer()
                     
+                    let average = MarksViewModel.averageMarks(marks: marks)
                     HStack {
                         Image(systemName: "graduationcap.circle")
-                        Text("4.20")
+                        Text("\(String(format: "%.2f", average))%")
                     }
                     
                     Spacer()
