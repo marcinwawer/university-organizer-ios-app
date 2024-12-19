@@ -69,6 +69,7 @@ struct MarksView: View {
     MarksView()
 }
 
+// MARK: VARIABLES
 extension MarksView {
     private var title: some View {
         HStack {
@@ -145,5 +146,6 @@ extension MarksView {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
+        .scrollIndicators(.hidden)
     }
 }

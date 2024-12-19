@@ -21,7 +21,7 @@ struct ContentView: View {
                         Tab.init(value: .home) {
                             HomeView(activeTab: $activeTab, checkWelcomeView: $checkWelcomeView, safeAreaInsets: geo.safeAreaInsets)
                                 .toolbarVisibility(.hidden, for: .tabBar)
-//                                .ignoresSafeArea(.keyboard) ??? moze byc potrzebne do chowania tabbar przy pisaniu ???
+//                                .ignoresSafeArea(.keyboard) 
                         }
                         
                         Tab.init(value: .tasks) {
