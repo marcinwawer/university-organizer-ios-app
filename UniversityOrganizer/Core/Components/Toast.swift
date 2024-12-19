@@ -15,35 +15,39 @@ struct Toast: View {
     
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(.thinMaterial)
-                .shadow(
-                    color: colorScheme == .dark ? .white.opacity(0.4) : .black.opacity(0.4),
-                    radius: 12
-                )
-            
-            VStack {
-                Image(systemName: isPositive ? "checkmark.circle" : "x.circle")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 75, height: 75)
-                    
-                Text(info)
-                    .multilineTextAlignment(.center)
-            }
-            .padding()
-            .foregroundStyle(isPositive ? Color.theme.green : Color.theme.red)
+            toastBackground
+            toastContent
         }
         .frame(width: 180, height: 180)
         .transition(.opacity)
-        .onAppear {
-            isPositive ? successsHapticFeedback() : errorHapticFeedback()
-        }
+        .onAppear { isPositive ? successsHapticFeedback() : errorHapticFeedback() }
     }
 }
 
-#Preview {
-    Toast(info: "Successfully changed profile picture!", isPositive: true)
+// MARK: VARIABLES
+extension Toast {
+    private var toastContent: some View {
+        VStack {
+            Image(systemName: isPositive ? "checkmark.circle" : "x.circle")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 75, height: 75)
+            
+            Text(info)
+                .multilineTextAlignment(.center)
+        }
+        .padding()
+        .foregroundStyle(isPositive ? Color.theme.green : Color.theme.red)
+    }
+    
+    private var toastBackground: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .foregroundStyle(.thinMaterial)
+            .shadow(
+                color: colorScheme == .dark ? .white.opacity(0.4) : .black.opacity(0.4),
+                radius: 12
+            )
+    }
 }
 
 // MARK: FUNCTIONS
@@ -57,4 +61,8 @@ extension Toast {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.error)
     }
+}
+
+#Preview {
+    Toast(info: "Successfully changed profile picture!", isPositive: true)
 }

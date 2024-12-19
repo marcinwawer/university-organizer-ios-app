@@ -38,15 +38,12 @@ struct PlanView: View {
                             .padding(.horizontal, 20)
                     }
                     
-                    Spacer()
-                        .frame(height: 100)
+                    Spacer().frame(height: 100)
                 }
             }
             .opacity(opacityAnimation)
             .onAppear(perform: onAppearFunc)
-            .onDisappear {
-                opacityAnimation = 0
-            } 
+            .onDisappear { opacityAnimation = 0 }
             .onChange(of: chosenDay) { _, newValue in
                 onChangeFunc(newValue: newValue)
             }
@@ -56,13 +53,7 @@ struct PlanView: View {
     }
 }
 
-#Preview {
-    PlanView()
-        .environment(DeveloperPreview.shared.planVM)
-}
-
-// MARK: COMPONENTS
-
+// MARK: VARIABLES
 extension PlanView {
     private var title: some View {
         HStack {
@@ -92,7 +83,6 @@ extension PlanView {
 }
 
 // MARK: FUNCTIONS
-
 extension PlanView {
     private func onChangeFunc(newValue: Int) {
         withAnimation(.easeOut(duration: opacityAnimationDuration)) {
@@ -114,4 +104,9 @@ extension PlanView {
             }
         }
     }
+}
+
+#Preview {
+    PlanView()
+        .environment(DeveloperPreview.shared.planVM)
 }

@@ -28,8 +28,7 @@ struct PreferencesView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient.customGradient
-                .ignoresSafeArea()
+            LinearGradient.customGradient.ignoresSafeArea()
             
             VStack {
                 darkModeOption
@@ -57,13 +56,7 @@ struct PreferencesView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        PreferencesView(checkWelcomeView: .constant(true))
-            .environment(DeveloperPreview.shared.userVM)
-    }
-}
-
+// MARK: VARIABLES
 extension PreferencesView {
     private var darkModeOption: some View {
         Toggle("🌙 Dark Mode", isOn: Binding(
@@ -162,5 +155,12 @@ extension PreferencesView {
                 Toast(info: "Error during changing profile picture.", isPositive: false)
             }
         }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        PreferencesView(checkWelcomeView: .constant(true))
+            .environment(DeveloperPreview.shared.userVM)
     }
 }

@@ -12,6 +12,7 @@ struct ProfilePicturePickerView: View {
     @Environment(UserViewModel.self) private var userVM
     
     @State private var photosPickerItem: PhotosPickerItem?
+    
     @Binding var showPositiveToast: Bool
     @Binding var showNegativeToast: Bool
     
@@ -46,11 +47,6 @@ struct ProfilePicturePickerView: View {
     }
 }
 
-#Preview {
-    ProfilePicturePickerView(showPositiveToast: .constant(false), showNegativeToast: .constant(false))
-        .environment(DeveloperPreview.shared.userVM)
-}
-
 // MARK: FUNCTIONS
 extension ProfilePicturePickerView {
     private func positivePhotoPickerToast() {
@@ -76,4 +72,9 @@ extension ProfilePicturePickerView {
             }
         }
     }
+}
+
+#Preview {
+    ProfilePicturePickerView(showPositiveToast: .constant(false), showNegativeToast: .constant(false))
+        .environment(DeveloperPreview.shared.userVM)
 }

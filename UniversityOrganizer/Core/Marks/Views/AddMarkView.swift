@@ -67,13 +67,7 @@ struct AddMarkView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        AddMarkView(subject: DeveloperPreview.shared.subject, vm: DeveloperPreview.shared.marksVM)
-    }
-}
-
-// MARK: COMPONENTS
+// MARK: VARIABLES
 extension AddMarkView {
     private var pointsGotTextField: some View {
         TextField(strPointsGot.isEmpty ? "Number of points you got..." : strPointsGot, text: $strPointsGot)
@@ -156,5 +150,11 @@ extension AddMarkView {
                 .shadow(color: Color.theme.blue.opacity(0.5), radius: 10)
         }
         .padding(.horizontal)
+    }
+}
+
+#Preview {
+    NavigationStack {
+        AddMarkView(subject: DeveloperPreview.shared.subject, vm: DeveloperPreview.shared.marksVM)
     }
 }

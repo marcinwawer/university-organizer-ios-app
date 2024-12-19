@@ -8,7 +8,8 @@
 import Foundation
 import SwiftData
 
-@Observable class TasksViewModel {
+@Observable
+class TasksViewModel {
     var todos: [Todo] = []
     var deadlines: [Todo] = []
     var done: [Todo] = []
@@ -27,39 +28,24 @@ import SwiftData
         self.deadlines = deadlinesFromTasks(from: tasks)
     }
     
-    func deadlinesFromTasks(from tasks: [Todo]) -> [Todo] {
-        return tasks.filter { $0.dueDate != nil && !$0.isDone}
-    }
+    func deadlinesFromTasks(from tasks: [Todo]) -> [Todo] { return tasks.filter { $0.dueDate != nil && !$0.isDone} }
     
-    func todosFromTasks(from tasks: [Todo]) -> [Todo] {
-        return tasks.filter { $0.dueDate == nil && !$0.isDone}
-    }
+    func todosFromTasks(from tasks: [Todo]) -> [Todo] { return tasks.filter { $0.dueDate == nil && !$0.isDone} }
     
-    func doneFromTasks(from tasks: [Todo]) -> [Todo] {
-        return tasks.filter { $0.isDone }
-    }
+    func doneFromTasks(from tasks: [Todo]) -> [Todo] { return tasks.filter { $0.isDone } }
     
-    func markAsDone(_ task: Todo) {
-        task.isDone = true
-    }
+    func markAsDone(_ task: Todo) { task.isDone = true }
     
-    func markAsUndone(_ task: Todo) {
-        task.isDone = false
-    }
+    func markAsUndone(_ task: Todo) { task.isDone = false }
     
     func addTask(context: ModelContext, title: String, subject: Subject?, dueDate: Date? = nil) {
-        guard let subject = subject else {
-            return
-        }
+        guard let subject = subject else { return }
         
         let task = Todo(title: title, subject: subject, dueDate: dueDate)
         context.insert(task)
         
-        do {
-            try context.save()
-        } catch {
-            print("error saving task: \(error)")
-        }
+        do { try context.save() }
+        catch { print("error saving task: \(error)") }
     }
     
     func deleteTask(from list: inout [Todo], at offsets: IndexSet, context: ModelContext) {

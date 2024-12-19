@@ -8,12 +8,11 @@
 import Foundation
 import SwiftData
 
-@Observable class MarksViewModel {
+@Observable
+class MarksViewModel {
     var marks: [Mark] = []
     
-    init(marks: [Mark]) {
-        self.marks = marks
-    }
+    init(marks: [Mark]) { self.marks = marks }
     
     func getMarksForSubject(subject: Subject) -> [Mark] {
         return marks.filter { $0.subject == subject }
@@ -23,11 +22,8 @@ import SwiftData
         let mark = Mark(pointsGot: pointsGot, pointsMax: pointsMax, subject: subject)
         context.insert(mark)
         
-        do {
-            try context.save()
-        } catch {
-            print("error saving mark: \(error)")
-        }
+        do { try context.save() }
+        catch { print("error saving mark: \(error)") }
     }
     
     func isMarkValid(pointsGot: Double, pointsMax: Double) -> (Bool, String?) {
@@ -50,6 +46,7 @@ import SwiftData
             context.delete(mark)
             marks.remove(at: index)
         }
+        
         try? context.save()
     }
     
@@ -67,30 +64,24 @@ import SwiftData
     
     func getDoubleValue(_ strValue: String) -> Double {
         let normalizedValue = strValue.replacingOccurrences(of: ",", with: ".")
-        if let value = Double(normalizedValue) {
-            return value
-        } else {
-            return 0
-        }
+        
+        if let value = Double(normalizedValue) { return value }
+        else { return 0 }
     }
     
     static func marksFromLastWeek(marks: [Mark]) -> Int {
         let calendar = Calendar.current
         let now = Date()
         
-        guard let oneWeekAgo = calendar.date(byAdding: .day, value: -7, to: now) else {
-            return 0
-        }
+        guard let oneWeekAgo = calendar.date(byAdding: .day, value: -7, to: now) else { return 0 }
         
-        let recentMarks = marks.filter { mark in
-            mark.date >= oneWeekAgo && mark.date <= now
-        }
-        
+        let recentMarks = marks.filter { $0.date >= oneWeekAgo && $0.date <= now }
         return recentMarks.count
     }
     
     static func averageMarks(marks: [Mark]) -> Double {
         guard !marks.isEmpty else { return 0.0 }
+        
         let totalPercentage = marks.reduce(0.0) { $0 + $1.percentage }
         return totalPercentage / Double(marks.count)
     }

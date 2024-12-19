@@ -82,13 +82,6 @@ struct WelcomeView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        WelcomeView(checkWelcomeView: .constant(true))
-            .environment(DeveloperPreview.shared.userVM)
-    }
-}
-
 // MARK: COMPONENTS
 extension WelcomeView {
     private var nameTextField: some View {
@@ -319,5 +312,12 @@ extension WelcomeView {
                 showNegativeFileImportToast = false
             }
         }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        WelcomeView(checkWelcomeView: .constant(true))
+            .environment(DeveloperPreview.shared.userVM)
     }
 }

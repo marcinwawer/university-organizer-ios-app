@@ -17,8 +17,7 @@ struct ColorPickerView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient.customGradient
-                .ignoresSafeArea()
+            LinearGradient.customGradient.ignoresSafeArea()
             
             VStack {
                 if (subjects.isEmpty) {
@@ -38,18 +37,16 @@ struct ColorPickerView: View {
                     .scrollContentBackground(.hidden)
                     
                     Spacer()
-                    
                     resetButton
                 }
             }
             .navigationTitle("Select Colors for Classes")
-            .onAppear {
-                vm.initializeColors(from: subjects)
-            }
+            .onAppear { vm.initializeColors(from: subjects) }
         }
     }
 }
 
+// MARK: VARIABLES 
 extension ColorPickerView {
     private var resetButton: some View {
         Button {

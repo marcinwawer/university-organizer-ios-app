@@ -17,7 +17,6 @@ class Subject: Identifiable {
     var room: String?
     var building: String?
     var colorHex: String?
-    
     var todos: [Todo] = []
     
     init(name: String, type: SubjectType, room: String? = nil, building: String? = nil, color: Color? = nil) {

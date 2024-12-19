@@ -18,7 +18,6 @@ struct AddNoteView: View {
     @State private var chosenSubjectID: UUID? = nil
     @State private var title = ""
     @State private var content = ""
-    
     @State private var showAlertSubject = false
     @State private var showAlertTitle = false
     @State private var showAlertContent = false
@@ -30,10 +29,8 @@ struct AddNoteView: View {
             
             VStack {
                 subjectOption
-                titleTextField
-                    .padding(.bottom)
+                titleTextField.padding(.bottom)
                 contentTextField
-                
                 Spacer()
                 saveButton
             }
@@ -59,12 +56,7 @@ struct AddNoteView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        AddNoteView(vm: DeveloperPreview.shared.notesVM)
-    }
-}
-
+// MARK: VARIABLES
 extension AddNoteView {
     private var subjectOption: some View {
         HStack(spacing: 0) {
@@ -157,5 +149,11 @@ extension AddNoteView {
                 .shadow(color: Color.theme.blue.opacity(0.5), radius: 10)
         }
         .padding(.horizontal)
+    }
+}
+
+#Preview {
+    NavigationStack {
+        AddNoteView(vm: DeveloperPreview.shared.notesVM)
     }
 }

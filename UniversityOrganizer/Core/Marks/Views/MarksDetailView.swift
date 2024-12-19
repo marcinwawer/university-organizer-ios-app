@@ -51,13 +51,7 @@ struct MarksDetailView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        MarksDetailView(vm: DeveloperPreview.shared.marksVM, subject: DeveloperPreview.shared.subject)
-    }
-}
-
-// MARK: COMPONENTS
+// MARK: VARIABLES
 extension MarksDetailView {
     private var subjectMarksList: some View {
         List {
@@ -93,5 +87,11 @@ extension MarksDetailView {
 extension MarksDetailView {
     private func updateSubjectMarks() {
         subjectMarks = vm.getMarksForSubject(subject: subject)
+    }
+}
+
+#Preview {
+    NavigationStack {
+        MarksDetailView(vm: DeveloperPreview.shared.marksVM, subject: DeveloperPreview.shared.subject)
     }
 }

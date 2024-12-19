@@ -8,12 +8,11 @@
 import Foundation
 import SwiftData
 
-@Observable class NotesViewModel {
+@Observable
+class NotesViewModel {
     var notes: [Note] = []
     
-    init(notes: [Note]) {
-        self.notes = notes
-    }
+    init(notes: [Note]) { self.notes = notes }
     
     func addNote(context: ModelContext, title: String, subject: Subject?, content: String) {
         guard let subject = subject else {
@@ -23,11 +22,8 @@ import SwiftData
         let note = Note(title: title, content: content, subject: subject)
         context.insert(note)
         
-        do {
-            try context.save()
-        } catch {
-            print("error saving note: \(error)")
-        }
+        do { try context.save() }
+        catch { print("error saving note: \(error)") }
     }
     
     func getNotesForSubject(subject: Subject) -> [Note] {
@@ -37,10 +33,7 @@ import SwiftData
     func deleteNote(context: ModelContext, note: Note) {
         context.delete(note)
         
-        do {
-            try context.save()
-        } catch {
-            print("error deleting note: \(error)")
-        }
+        do { try context.save() }
+        catch { print("error deleting note: \(error)") }
     }
 }

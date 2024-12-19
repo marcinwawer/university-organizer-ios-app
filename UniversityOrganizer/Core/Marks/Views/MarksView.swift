@@ -16,9 +16,7 @@ struct MarksView: View {
     @State private var vm: MarksViewModel
     @State private var isChartVisible: Bool = false
     
-    init() {
-        _vm = State(wrappedValue: MarksViewModel(marks: []))
-    }
+    init() { _vm = State(wrappedValue: MarksViewModel(marks: [])) }
     
     var body: some View {
         NavigationStack {
@@ -49,7 +47,6 @@ struct MarksView: View {
                     NoClassesView()
                 }
                 
-                
                 Spacer()
             }
             .ignoresSafeArea(edges: .bottom)
@@ -63,10 +60,6 @@ struct MarksView: View {
             .onDisappear { isChartVisible = false }
         }
     }
-}
-
-#Preview {
-    MarksView()
 }
 
 // MARK: VARIABLES
@@ -148,4 +141,8 @@ extension MarksView {
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
     }
+}
+
+#Preview {
+    MarksView()
 }

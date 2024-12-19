@@ -65,6 +65,7 @@ class LocalFileManager {
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             return nil
         }
+        
         return url.appending(path: folderName)
     }
     
@@ -72,11 +73,13 @@ class LocalFileManager {
         guard let folderURL = getURLForFolder(folderName: folderName) else {
             return nil
         }
+        
         return folderURL.appending(path: imageName + ".png")
     }
     
     func deleteImage(imageName: String, folderName: String) {
         guard let url = getURLForImage(imageName: imageName, folderName: folderName) else { return }
+        
         do {
             try FileManager.default.removeItem(at: url)
             print("Image deleted: \(imageName)")

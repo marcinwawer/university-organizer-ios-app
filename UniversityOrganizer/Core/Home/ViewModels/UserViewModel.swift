@@ -8,7 +8,8 @@
 import SwiftUI
 import SwiftData
 
-@Observable class UserViewModel {
+@Observable
+class UserViewModel {
     var profileImage: UIImage?
     
     private let user = User.shared
@@ -16,9 +17,7 @@ import SwiftData
     private let folderName = "user_profile_picture"
     private let imageName = "profile_picture"
     
-    init() {
-        loadProfilePicture()
-    }
+    init() { loadProfilePicture() }
     
     var name: String {
         get { user.name }

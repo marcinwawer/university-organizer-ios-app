@@ -9,6 +9,7 @@ import SwiftUI
 
 class DeveloperPreview {
     static let shared = DeveloperPreview()
+    
     private init() {
         subjects = [subject, subject2]
         

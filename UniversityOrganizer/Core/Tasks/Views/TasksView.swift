@@ -15,7 +15,6 @@ struct TasksView: View {
     @Query private var subjects: [Subject]
     
     @State private var vm: TasksViewModel
-    
     @State private var showAlert = false
     @State private var chosenType = 0
     @State private var showAddTaskView = false
@@ -80,9 +79,7 @@ struct TasksView: View {
             Spacer()
         }
         .ignoresSafeArea(edges: .bottom)
-        .onAppear {
-            vm.tasks = tasks
-        }
+        .onAppear { vm.tasks = tasks }
         .sheet(isPresented: $showAddTaskView, onDismiss: {
             vm.tasks = tasks
         }, content: {
@@ -100,6 +97,7 @@ struct TasksView: View {
     TasksView()
 }
 
+// MARK: VARIABLES
 extension TasksView {
     private var title: some View {
         HStack {

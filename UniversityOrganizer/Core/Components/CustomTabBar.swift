@@ -9,9 +9,9 @@ import SwiftUI
 
 struct CustomTabBar: View {
     @Environment(\.colorScheme) var colorScheme
+    @Namespace private var animation
     
     @Binding var activeTab: TabModel
-    @Namespace private var animation
     @State private var tabLocation = CGRect.zero
     
     var activeForeground = Color.white
@@ -49,10 +49,7 @@ struct CustomTabBar: View {
     }
 }
 
-#Preview {
-    ContentView()
-}
-
+// MARK: FUNCTIONS
 extension CustomTabBar {
     private func tabBarButtonLabel(_ tab: TabModel) -> some View {
         HStack(spacing: 5) {
@@ -85,4 +82,8 @@ extension CustomTabBar {
             }
         }
     }
+}
+
+#Preview {
+    ContentView()
 }

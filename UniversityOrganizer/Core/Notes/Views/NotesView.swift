@@ -30,12 +30,10 @@ struct NotesView: View {
                 .padding(.bottom, 8)
                 .background(GradientBackground())
             
-            HStack {
-                Spacer()
-                addNoteButton
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 6)
+            addNoteButton
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.horizontal)
+                .padding(.vertical, 6)
             
             ZStack {
                 if vm.notes.isEmpty {
@@ -53,9 +51,7 @@ struct NotesView: View {
             Spacer()
         }
         .ignoresSafeArea(edges: .bottom)
-        .onAppear {
-            vm.notes = notes
-        }
+        .onAppear { vm.notes = notes }
         .sheet(isPresented: $showDetailSheet) {
             vm.notes = notes
         } content: {
@@ -80,10 +76,7 @@ struct NotesView: View {
     }
 }
 
-#Preview {
-    NotesView()
-}
-
+// MARK: VARIABLES
 extension NotesView {
     private var title: some View {
         HStack {
@@ -147,4 +140,8 @@ extension NotesView {
             }
         }
     }
+}
+
+#Preview {
+    NotesView()
 }

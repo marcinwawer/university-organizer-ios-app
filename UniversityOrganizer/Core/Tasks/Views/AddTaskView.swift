@@ -24,8 +24,7 @@ struct AddTaskView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient.customGradient
-                .ignoresSafeArea()
+            LinearGradient.customGradient.ignoresSafeArea()
             
             VStack {
                 subjectOption
@@ -37,7 +36,6 @@ struct AddTaskView: View {
                 }
                 
                 Spacer()
-                
                 taskTypePicker
                 saveButton
             }
@@ -58,12 +56,6 @@ struct AddTaskView: View {
         .alert("Your task title is empty!", isPresented: $showAlertTitle) {
             Button("OK", role: .cancel) { }
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        AddTaskView(vm: DeveloperPreview.shared.tasksVM)
     }
 }
 
@@ -157,5 +149,11 @@ extension AddTaskView {
                 .shadow(color: Color.theme.blue.opacity(0.5), radius: 10)
         }
         .padding(.horizontal)
+    }
+}
+
+#Preview {
+    NavigationStack {
+        AddTaskView(vm: DeveloperPreview.shared.tasksVM)
     }
 }

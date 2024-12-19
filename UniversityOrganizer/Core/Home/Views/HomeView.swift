@@ -11,7 +11,6 @@ import SwiftData
 struct HomeView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.modelContext) private var context
-    
     @Environment(UserViewModel.self) private var userVM
     @Environment(PlanViewModel.self) private var planVM
     
@@ -31,13 +30,9 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack() {
-                header
-                    .padding(.bottom, 4)
-                
+                header.padding(.bottom, 4)
                 universityInfo
-                
-                userInfo
-                    .padding(.top)
+                userInfo.padding(.top)
             }
             .padding()
             .padding(.top, safeAreaInsets.top)
@@ -62,9 +57,7 @@ struct HomeView: View {
                 .foregroundStyle(Color.theme.blue)
             
             upcomingClassSection
-            
             averageMarkSection
-            
             Spacer()
         }
         .onAppear {
@@ -85,16 +78,7 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    GeometryReader { geo in
-        HomeView(activeTab: .constant(TabModel.home), checkWelcomeView: .constant(true), safeAreaInsets: geo.safeAreaInsets)
-            .environment(DeveloperPreview.shared.userVM)
-            .environment(DeveloperPreview.shared.planVM)
-    }
-}
-
-// MARK: COMPONENTS
-
+// MARK: VARIABLES
 extension HomeView {
     private var header: some View {
         HStack {
@@ -223,7 +207,6 @@ extension HomeView {
 }
 
 // MARK: FUNCTIONS
-
 extension HomeView {
     func newsView(text: String) -> some View {
         HStack {
@@ -240,5 +223,13 @@ extension HomeView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             upcomingSubject = planVM.getSubjectClosestToNow(context: context)
         }
+    }
+}
+
+#Preview {
+    GeometryReader { geo in
+        HomeView(activeTab: .constant(TabModel.home), checkWelcomeView: .constant(true), safeAreaInsets: geo.safeAreaInsets)
+            .environment(DeveloperPreview.shared.userVM)
+            .environment(DeveloperPreview.shared.planVM)
     }
 }

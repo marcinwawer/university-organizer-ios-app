@@ -13,6 +13,7 @@ struct DetailNoteView: View {
     @Environment(\.modelContext) private var context
     
     let note: Note
+    
     @State var vm: NotesViewModel
     
     var body: some View {
@@ -29,11 +30,7 @@ struct DetailNoteView: View {
             
             Spacer()
             
-            HStack() {
-                Spacer()
-                deleteNoteButton
-                Spacer()
-            }
+            deleteNoteButton.frame(maxWidth: .infinity, alignment: .center)
         }
         .padding(.horizontal)
         .navigationTitle(note.subject.name)
@@ -50,12 +47,7 @@ struct DetailNoteView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        DetailNoteView(note: DeveloperPreview.shared.note, vm: DeveloperPreview.shared.notesVM)
-    }
-}
-
+// MARK: VARIABLES
 extension DetailNoteView {
     private var deleteNoteButton: some View {
         Button {
@@ -64,10 +56,15 @@ extension DetailNoteView {
         } label: {
             HStack {
                 Image(systemName: "minus.circle")
-                
                 Text("Delete Note")
             }
             .foregroundStyle(Color.theme.red)
         }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        DetailNoteView(note: DeveloperPreview.shared.note, vm: DeveloperPreview.shared.notesVM)
     }
 }

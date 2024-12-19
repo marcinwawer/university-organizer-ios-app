@@ -8,7 +8,8 @@
 import Foundation
 import SwiftData
 
-@Observable class PlanViewModel {
+@Observable
+class PlanViewModel {
     var subjects: [Subject] = []
     var shownDay = 0
     
@@ -20,9 +21,8 @@ import SwiftData
         var seenNames: Set<String> = []
         
         let sortedSubjects = subjects.sorted {
-            if $0.name == $1.name {
-                return $0.type < $1.type
-            }
+            if $0.name == $1.name { return $0.type < $1.type }
+            
             return $0.name < $1.name
         }
         
@@ -48,16 +48,13 @@ import SwiftData
                 }
             )
             let fetchedSubjects = try context.fetch(descriptor)
-            
             self.subjects = sortSubjectsByEarliestStartTime(fetchedSubjects)
         } catch {
             print("error fetching data: \(error)")
         }
         
         #if DEBUG
-        for subject in subjects {
-            print(subject.name)
-        }
+        for subject in subjects { print(subject.name) }
         #endif
     }
     

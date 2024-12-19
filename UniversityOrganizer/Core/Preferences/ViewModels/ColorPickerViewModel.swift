@@ -8,7 +8,8 @@
 import SwiftUI
 import SwiftData
 
-@Observable class ColorPickerViewModel {
+@Observable
+class ColorPickerViewModel {
     var selectedColors: [UUID: Color] = [:]
     private var nameToColorMap: [String: Color] = [:]
     
@@ -45,10 +46,7 @@ import SwiftData
     }
     
     private func saveChanges(context: ModelContext) {
-        do {
-            try context.save()
-        } catch {
-            print("Failed to save changes: \(error)")
-        }
+        do { try context.save() }
+        catch { print("Failed to save changes: \(error)") }
     }
 }

@@ -69,6 +69,7 @@ func extractRoom(from description: String) -> String? {
             return room
         }
     }
+    
     return nil
 }
 
@@ -78,6 +79,7 @@ func extractBuilding(from description: String) -> String? {
         let building = description[startRange.upperBound..<endRange.lowerBound]
         return String(building).trimmingCharacters(in: .whitespacesAndNewlines)
     }
+    
     return nil
 }
 
@@ -99,9 +101,7 @@ func extractDayOfWeek(from dateString: String) -> Int? {
     formatter.dateFormat = "yyyyMMdd'T'HHmmss"
     formatter.timeZone = TimeZone(secondsFromGMT: 0)
     
-    guard let date = formatter.date(from: dateString) else {
-        return nil
-    }
+    guard let date = formatter.date(from: dateString) else { return nil }
     
     var calendar = Calendar.current
     calendar.firstWeekday = 2
