@@ -41,20 +41,20 @@ struct HomeView: View {
             let todosNum = todos.count
             newsView(text: todosNum == 0 ? "All tasks completed!" :
                         (todosNum == 1 ? "1 task to complete" : "\(todosNum) tasks to complete"))
-                .padding(.leading)
-                .foregroundStyle(Color.theme.green)
+            .padding(.leading)
+            .foregroundStyle(Color.theme.green)
             
             let deadlinesNum = deadlines.count
             newsView(text: deadlinesNum == 0 ? "All deadlines completed!" :
                         (deadlinesNum == 1 ? "1 deadline to complete" : "\(deadlinesNum) deadlines to complete"))
-                .padding(.leading)
-                .foregroundStyle(Color.theme.red)
+            .padding(.leading)
+            .foregroundStyle(Color.theme.red)
             
             let marksCount = MarksViewModel.marksFromLastWeek(marks: marks)
             newsView(text: marksCount == 0 ? "No new marks last week!" :
                         marksCount == 1 ? "1 new mark last week" : "\(marksCount) new marks last week")
-                .padding(.leading)
-                .foregroundStyle(Color.theme.blue)
+            .padding(.leading)
+            .foregroundStyle(Color.theme.blue)
             
             upcomingClassSection
             averageMarkSection

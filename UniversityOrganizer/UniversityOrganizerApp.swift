@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct UniversityOrganizerApp: App {
     @AppStorage("appearance") private var appearance: Appearance = .light
+    
     @State private var vm = UserViewModel()
     @State private var planVM = PlanViewModel()
     
