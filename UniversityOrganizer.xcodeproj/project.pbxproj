@@ -6,7 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		8493515C2D19A22A00AAF672 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 84EDF79A2CCA880B00CDF328 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 84EDF7A12CCA880B00CDF328;
+			remoteInfo = UniversityOrganizer;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		849351562D19A22A00AAF672 /* UniversityOrganizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UniversityOrganizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84EDF7A22CCA880B00CDF328 /* UniversityOrganizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniversityOrganizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -21,6 +32,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		849351572D19A22A00AAF672 /* UniversityOrganizerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = UniversityOrganizerUITests;
+			sourceTree = "<group>";
+		};
 		84C092462CCC405900A883CE /* UniversityOrganizer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -32,6 +48,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		849351532D19A22A00AAF672 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		84EDF79F2CCA880B00CDF328 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				84C092462CCC405900A883CE /* UniversityOrganizer */,
+				849351572D19A22A00AAF672 /* UniversityOrganizerUITests */,
 				84EDF7A32CCA880B00CDF328 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				84EDF7A22CCA880B00CDF328 /* UniversityOrganizer.app */,
+				849351562D19A22A00AAF672 /* UniversityOrganizerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +86,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		849351552D19A22A00AAF672 /* UniversityOrganizerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 849351602D19A22A00AAF672 /* Build configuration list for PBXNativeTarget "UniversityOrganizerUITests" */;
+			buildPhases = (
+				849351522D19A22A00AAF672 /* Sources */,
+				849351532D19A22A00AAF672 /* Frameworks */,
+				849351542D19A22A00AAF672 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8493515D2D19A22A00AAF672 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				849351572D19A22A00AAF672 /* UniversityOrganizerUITests */,
+			);
+			name = UniversityOrganizerUITests;
+			packageProductDependencies = (
+			);
+			productName = UniversityOrganizerUITests;
+			productReference = 849351562D19A22A00AAF672 /* UniversityOrganizerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		84EDF7A12CCA880B00CDF328 /* UniversityOrganizer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84EDF7B02CCA880C00CDF328 /* Build configuration list for PBXNativeTarget "UniversityOrganizer" */;
@@ -90,9 +138,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1600;
+				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					849351552D19A22A00AAF672 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 84EDF7A12CCA880B00CDF328;
+					};
 					84EDF7A12CCA880B00CDF328 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -113,11 +165,19 @@
 			projectRoot = "";
 			targets = (
 				84EDF7A12CCA880B00CDF328 /* UniversityOrganizer */,
+				849351552D19A22A00AAF672 /* UniversityOrganizerUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		849351542D19A22A00AAF672 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		84EDF7A02CCA880B00CDF328 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +188,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		849351522D19A22A00AAF672 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		84EDF79E2CCA880B00CDF328 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +204,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		8493515D2D19A22A00AAF672 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 84EDF7A12CCA880B00CDF328 /* UniversityOrganizer */;
+			targetProxy = 8493515C2D19A22A00AAF672 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		8493515E2D19A22A00AAF672 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PJV8K27Q6U;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marcinwawer.UniversityOrganizerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = UniversityOrganizer;
+			};
+			name = Debug;
+		};
+		8493515F2D19A22A00AAF672 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PJV8K27Q6U;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marcinwawer.UniversityOrganizerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = UniversityOrganizer;
+			};
+			name = Release;
+		};
 		84EDF7AE2CCA880C00CDF328 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -322,6 +433,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		849351602D19A22A00AAF672 /* Build configuration list for PBXNativeTarget "UniversityOrganizerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8493515E2D19A22A00AAF672 /* Debug */,
+				8493515F2D19A22A00AAF672 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		84EDF79D2CCA880B00CDF328 /* Build configuration list for PBXProject "UniversityOrganizer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
