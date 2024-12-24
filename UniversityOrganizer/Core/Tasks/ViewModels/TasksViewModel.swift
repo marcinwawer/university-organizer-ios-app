@@ -28,11 +28,17 @@ class TasksViewModel {
         self.deadlines = deadlinesFromTasks(from: tasks)
     }
     
-    func deadlinesFromTasks(from tasks: [Todo]) -> [Todo] { return tasks.filter { $0.dueDate != nil && !$0.isDone} }
+    func deadlinesFromTasks(from tasks: [Todo]) -> [Todo] {
+        return tasks.filter { $0.dueDate != nil && !$0.isDone}
+    }
     
-    func todosFromTasks(from tasks: [Todo]) -> [Todo] { return tasks.filter { $0.dueDate == nil && !$0.isDone} }
+    func todosFromTasks(from tasks: [Todo]) -> [Todo] {
+        return tasks.filter { $0.dueDate == nil && !$0.isDone}
+    }
     
-    func doneFromTasks(from tasks: [Todo]) -> [Todo] { return tasks.filter { $0.isDone } }
+    func doneFromTasks(from tasks: [Todo]) -> [Todo] {
+        return tasks.filter { $0.isDone }
+    }
     
     func markAsDone(_ task: Todo) { task.isDone = true }
     
