@@ -106,7 +106,7 @@ struct MarksViewModelUnitTests {
         
         #expect(
             String(format: "%.2f", result) == "76.67",
-            "Powinno wyliczyć średnią ~76.67 dla wartości [50, 100, 80]."
+            "Average should be ~76.67 for values [50, 100, 80]."
         )
     }
 }
